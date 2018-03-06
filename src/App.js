@@ -7,14 +7,14 @@ import { createField } from "./forms/components/utils";
 import type { FieldDef } from "./forms/components/types";
 
 const fields: FieldDef[] = [
-  createField({
+  {
     id: "NAME",
     name: "name",
     value: "bob",
     type: "text",
     required: true
-  }),
-  createField({
+  },
+  {
     id: "NAME2",
     name: "name",
     placeholder: "Enter name...",
@@ -32,18 +32,32 @@ const fields: FieldDef[] = [
         is: ["lock"]
       }
     ]
-  }),
-  createField({
+  },
+  {
     id: "AGE",
     name: "age",
     value: 18,
-    type: "number"
-  }),
-  createField({ id: "SHOW", name: "show", value: true, type: "checkbox" })
+    type: "number",
+    visibleWhen: [
+      {
+        fieldId: "SHOW",
+        isNot: [false]
+      }
+    ]
+  },
+  { id: "SHOW", name: "show", value: true, type: "checkbox" }
 ];
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      buttonIsDisabled: false,
+      formValue: {}
+    };
+  }
   render() {
+    const { buttonIsDisabled, formValue } = this.state;
     return (
       <div className="App">
         <header className="App-header">
@@ -53,7 +67,19 @@ class App extends Component {
         <p className="App-intro">
           To get started, edit <code>src/App.js</code> and save to reload.
         </p>
-        <Form fields={fields} />
+        <Form
+          fields={fields}
+          vale={formValue}
+          onChange={(formValue, isValid) =>
+            this.setState({ formValue, buttonIsDisabled: !isValid })
+          }
+        />
+        <button
+          disabled={buttonIsDisabled}
+          onClick={() => console.log("Form value is", formValue)}
+        >
+          OK
+        </button>
       </div>
     );
   }

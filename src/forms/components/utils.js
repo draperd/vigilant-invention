@@ -1,14 +1,19 @@
 // @flow
 import type {
+  CalculateFormValue,
   CreateFieldDef,
+  DetermineChangedValues,
   FieldDef,
   FormState,
   EvaluateRule,
   EvaluateAllRules,
+  JoinDeimitedValue,
   MapFieldsById,
+  OmitFieldValue,
   OnChange,
   ProcessFields,
   RegisterFields,
+  SplitDelimitedValue,
   UpdateFieldValue,
   Value,
   ValidateField,
@@ -18,8 +23,7 @@ import type {
 // A field definition is valid if a field with the same id does not already exist in
 // the supplied form state.
 // We are assuming that typing takes care that all required attributes are present
-const fieldDefIsValid = (field: FieldDef, state: FormState) => {
-  const { fields } = state;
+const fieldDefIsValid = (field: FieldDef, fields: FieldDef[]) => {
   return !fields.some(currentField => currentField.id === field.id);
 };
 
@@ -84,9 +88,9 @@ const processFields: ProcessFields = fields => {
       visible,
       required,
       disabled,
-      visibleWhen,
-      requiredWhen,
-      disabledWhen
+      visibleWhen = [],
+      requiredWhen = [],
+      disabledWhen = []
     } = field;
     return Object.assign({}, field, {
       visible: evaluateAllRules(visibleWhen, fieldsById, visible !== false),
@@ -115,7 +119,7 @@ const validators = {
 };
 
 const validateField: ValidateField = field => {
-  const { required, visible, value, validWhen } = field;
+  const { required, visible, value, validWhen = {} } = field;
   let isValid = true;
   let errorMessages = [];
   if (visible) {
@@ -188,9 +192,8 @@ const createField: CreateFieldDef = field => {
 
 const registerFields: RegisterFields = fieldsToValidate => {
   const fields = [];
-  const state: FormState = { fields };
   fieldsToValidate.forEach(field => {
-    if (fieldDefIsValid(field, state)) {
+    if (fieldDefIsValid(field, fields)) {
       fields.push(field);
     }
   });
@@ -199,21 +202,98 @@ const registerFields: RegisterFields = fieldsToValidate => {
 
 const updateFieldValue: UpdateFieldValue = (id, value, fields) => {
   const fieldsById = mapFieldsById(fields);
-
   const updateValue = typeof value !== "undefined" && value;
   fieldsById[id].value = updateValue;
-
-  fields = processFields(fields);
-  fields = validateAllFields(fields);
-  // const isValid = fields.every(field => field.isValid);
-  // const value = generateFormValue({ fields });
-
-  // fieldsById = mapFieldsById({ fields });
-
   return fields;
 };
 
+// const splitDelimitedValue: SplitDelimitedValue = (value, valueDelimiter) => {
+//   if (valueDelimiter) {
+//     if (typeof value === "string") {
+//       value = value.split(valueDelimiter);
+//     } else {
+//       value = [];
+//     }
+//   }
+//   return value;
+// };
+
+// const joinDelimitedValue: JoinDeimitedValue = (value, valueDelimiter) => {
+//   if (Array.isArray(value) && valueDelimiter) {
+//     value = value.join(valueDelimiter);
+//   }
+//   return value;
+// };
+
+// const getMissingItems = ({ missingFrom, foundIn }) => {
+//   return foundIn.reduce((missingItems, item) => {
+//     !missingFrom.includes(item) && missingItems.push(item);
+//     return missingItems;
+//   }, []);
+// };
+
+// const determineChangedValues: DetermineChangedValues = field => {
+//   const { name, initialValue, value } = field;
+//   valueDelimiter, (addedSuffix = "_added"), (removedSuffix = "_removed");
+//   const outputValues = [];
+//   initialValue = splitDelimitedValue(initialValue, valueDelimiter);
+
+//   let added = getMissingItems(value, initialValue);
+//   let removed = getMissingItems(initialValue, value);
+
+//   added = joinDelimitedValue(added, valueDelimiter);
+//   removed = joinDelimitedValue(removed, valueDelimiter);
+
+//   outputValues.push(
+//     {
+//       name: name + addedSuffix,
+//       value: added
+//     },
+//     {
+//       name: name + removedSuffix,
+//       value: removed
+//     }
+//   );
+//   return outputValues;
+// };
+
+const shouldOmitFieldValue: OmitFieldValue = field => {
+  const { omitWhenHidden, omitWhenValueIs = [], visible, value } = field;
+  return (
+    (omitWhenHidden && !visible) ||
+    (omitWhenValueIs.length !== 0 &&
+      omitWhenValueIs.some(currValue => value === currValue))
+  );
+};
+
+const calculateFormValue: CalculateFormValue = fields => {
+  return fields.reduce((formValue, field) => {
+    const { name, value } = field;
+    if (shouldOmitFieldValue(field)) {
+      return formValue;
+    } else {
+      formValue[name] = value;
+    }
+    // else if (field.name) {
+    //   if (field.useChangesAsValues) {
+    //     determineChangedValues(field).forEach(
+    //       ({ name, value }) => (formValue[name] = value)
+    //     );
+    //   } else {
+    //     formValue[field.name] = field.value;
+    //   }
+    // } else {
+    //   console.warn(
+    //     "Cannot set a value because no 'name' attribute is present on the field",
+    //     field
+    //   );
+    // }
+    return formValue;
+  }, {});
+};
+
 export {
+  calculateFormValue,
   createField,
   evaluateRule,
   evaluateAllRules,
@@ -222,6 +302,7 @@ export {
   mapFieldDefToComponent,
   processFields,
   registerFields,
+  shouldOmitFieldValue,
   updateFieldValue,
   valuesMatch,
   validateField,

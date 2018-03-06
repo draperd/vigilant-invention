@@ -1,12 +1,15 @@
 // @flow
 import {
+  calculateFormValue,
   createField,
   evaluateRule,
   evaluateAllRules,
   fieldDefIsValid,
   mapFieldsById,
+  shouldOmitFieldValue,
   processFields,
   registerFields,
+  updateFieldValue,
   validateField
 } from "./utils";
 import type { FieldDef, FormState } from "./types";
@@ -16,10 +19,6 @@ const field1 = createField({
   name: "name",
   value: "value"
 });
-
-const form1: FormState = {
-  fields: []
-};
 
 describe("registerFields", () => {
   const field1 = createField({
@@ -50,14 +49,11 @@ describe("registerFields", () => {
 
 describe("fieldDefIsValid", () => {
   it("field is valid when the form does not contain a field with the same id", () => {
-    expect(fieldDefIsValid(field1, form1)).toEqual(true);
+    expect(fieldDefIsValid(field1, [])).toEqual(true);
   });
 
   test("field is not valid when form already contains a field with the same id", () => {
-    const testForm: FormState = {
-      fields: [field1]
-    };
-    expect(fieldDefIsValid(field1, testForm)).toEqual(false);
+    expect(fieldDefIsValid(field1, [field1])).toEqual(false);
   });
 });
 
@@ -249,5 +245,70 @@ describe("processFields", () => {
   });
   test("field should be enabled", () => {
     expect(processedFieldsById.shouldBeEnabled.disabled).toBe(false);
+  });
+});
+
+describe("shouldOmitFieldValue", () => {
+  const baseField: FieldDef = {
+    id: "TEST",
+    value: "foo",
+    name: "test",
+    type: "text"
+  };
+  test("value should be omitted when hidden", () => {
+    const field = { ...baseField, omitWhenHidden: true, visible: false };
+    expect(shouldOmitFieldValue(field)).toEqual(true);
+  });
+  test("value should be included when visible", () => {
+    const field = { ...baseField, omitWhenHidden: true, visible: true };
+    expect(shouldOmitFieldValue(field)).toEqual(false);
+  });
+  test("value should be ommitted when value matches", () => {
+    const field = { ...baseField, omitWhenValueIs: ["foo"] };
+    expect(shouldOmitFieldValue(field)).toEqual(true);
+  });
+  test("value should be included when value does not match", () => {
+    const field = { ...baseField, omitWhenValueIs: ["wrong"] };
+    expect(shouldOmitFieldValue(field)).toEqual(false);
+  });
+});
+
+describe("calculateFormValue", () => {
+  const baseField: FieldDef = {
+    id: "TEST",
+    value: "foo",
+    name: "test",
+    type: "text"
+  };
+  const field1 = { ...baseField, omitWhenHidden: true, visible: false };
+  const field2 = { ...baseField, id: "TEST2", name: "test2", value: "bar" };
+  const field3 = { ...baseField, id: "TEST3", name: "test3", value: "bob" };
+  const field4 = { ...baseField, id: "TEST4", name: "test3", value: "ted" };
+
+  const value = calculateFormValue([field1, field2, field3, field4]);
+  test("two field values should be omitted", () => {
+    expect(Object.keys(value).length).toEqual(2);
+  });
+  test("hidden field value should not be included", () => {
+    expect(value.test).not.toBeDefined();
+  });
+  test("normal value should be included", () => {
+    expect(value.test2).toEqual("bar");
+  });
+  test("last field wins", () => {
+    expect(value.test3).toEqual("ted");
+  });
+});
+
+describe("updateFieldValue", () => {
+  const field1 = { id: "A", name: "a", type: "text", value: "baa" };
+  const field2 = { id: "B", name: "b", type: "text", value: "moo" };
+  const field3 = { id: "C", name: "c", type: "text", value: "woof" };
+
+  const fields = updateFieldValue("B", "oink", [field1, field2, field3]);
+  const fieldsById = mapFieldsById(fields);
+
+  test("field is updated with new value", () => {
+    expect(fieldsById.B.value).toEqual("oink");
   });
 });
