@@ -3,7 +3,7 @@
 export type Value = any;
 
 export type Rule = {
-  fieldId: string,
+  field: string,
   is?: Value[],
   isNot?: Value[]
 };
@@ -31,7 +31,10 @@ export type FieldDef = {
   valueDelimiter?: string,
   addedSuffix?: string,
   removedSuffix?: string,
-  options?: OptionGroup[]
+  options?: OptionGroup[],
+  misc?: {
+    [string]: any
+  }
 };
 
 export type Option =

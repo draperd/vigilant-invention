@@ -18,7 +18,7 @@ import type {
   Value,
   ValidateField,
   ValidateAllFields
-} from "./types";
+} from './types';
 
 // A field definition is valid if a field with the same id does not already exist in
 // the supplied form state.
@@ -71,8 +71,8 @@ const evaluateAllRules: EvaluateAllRules = (
   let rulesPass = defaultResult;
   if (rules.length) {
     rulesPass = rules.some(rule => {
-      if (rule.fieldId && fieldsById.hasOwnProperty(rule.fieldId)) {
-        return evaluateRule(rule, fieldsById[rule.fieldId].value);
+      if (rule.field && fieldsById.hasOwnProperty(rule.field)) {
+        return evaluateRule(rule, fieldsById[rule.field].value);
       } else {
         return defaultResult;
       }
@@ -110,7 +110,7 @@ const mapFieldsById: MapFieldsById = fields => {
 
 const validators = {
   lengthIsGreaterThan: function({ value, length, message }) {
-    if (isNaN(length) || (value || "").length > length) {
+    if (isNaN(length) || (value || '').length > length) {
       return;
     } else {
       return message || `Should have more than ${length} characters`;
@@ -130,7 +130,7 @@ const validateField: ValidateField = field => {
 
     isValid =
       Object.keys(validWhen).reduce((allValidatorsPass, validator) => {
-        if (typeof validators[validator] === "function") {
+        if (typeof validators[validator] === 'function') {
           let validationConfig = validWhen[validator];
           validationConfig.value = value;
           let message = validators[validator](validationConfig);
@@ -139,14 +139,14 @@ const validateField: ValidateField = field => {
             errorMessages.push(message);
           }
         } else {
-          console.warn("The requested validator does not exist", validator);
+          console.warn('The requested validator does not exist', validator);
         }
         return allValidatorsPass;
       }, isValid) && isValid;
   }
   return Object.assign({}, field, {
     isValid,
-    errorMessages: errorMessages.join(", ")
+    errorMessages: errorMessages.join(', ')
   });
 };
 
@@ -157,10 +157,10 @@ const validateAllFields: ValidateAllFields = fields => {
 
 const createField: CreateFieldDef = field => {
   const {
-    id = "",
-    name = "",
-    type = "",
-    placeholder = "",
+    id = '',
+    name = '',
+    type = '',
+    placeholder = '',
     value = undefined,
     visible = true,
     required = false,
@@ -170,7 +170,7 @@ const createField: CreateFieldDef = field => {
     disabledWhen = [],
     validWhen = {},
     isValid = true,
-    errorMessages = ""
+    errorMessages = ''
   } = field;
   return {
     id,
@@ -202,14 +202,14 @@ const registerFields: RegisterFields = fieldsToValidate => {
 
 const updateFieldValue: UpdateFieldValue = (id, value, fields) => {
   const fieldsById = mapFieldsById(fields);
-  const updateValue = typeof value !== "undefined" && value;
+  const updateValue = typeof value !== 'undefined' && value;
   fieldsById[id].value = updateValue;
   return fields;
 };
 
 const splitDelimitedValue: SplitDelimitedValue = (value, valueDelimiter) => {
   if (valueDelimiter) {
-    if (typeof value === "string") {
+    if (typeof value === 'string') {
       value = value.split(valueDelimiter);
     } else {
       value = [];
@@ -238,8 +238,8 @@ const determineChangedValues: DetermineChangedValues = field => {
     defaultValue,
     value,
     valueDelimiter,
-    addedSuffix = "_added",
-    removedSuffix = "_removed"
+    addedSuffix = '_added',
+    removedSuffix = '_removed'
   } = field;
   const outputValues = [];
 

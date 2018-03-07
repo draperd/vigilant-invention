@@ -3,7 +3,8 @@ import Button from '@atlaskit/button';
 import './App.css';
 
 import Form from './forms/components/Form';
-import renderField from './forms/components/AtlasKitFields';
+import renderAkField from './forms/components/AtlasKitFields';
+import renderNativeField from './forms/components/NativeFields';
 import type { FieldDef } from './forms/components/types';
 
 const fields: FieldDef[] = [
@@ -25,13 +26,13 @@ const fields: FieldDef[] = [
     required: true,
     visibleWhen: [
       {
-        fieldId: 'NAME',
+        field: 'NAME',
         isNot: ['hide']
       }
     ],
     disabledWhen: [
       {
-        fieldId: 'NAME',
+        field: 'NAME',
         is: ['lock']
       }
     ]
@@ -44,7 +45,7 @@ const fields: FieldDef[] = [
     type: 'text',
     visibleWhen: [
       {
-        fieldId: 'SHOW',
+        field: 'SHOW',
         isNot: [false]
       }
     ]
@@ -101,33 +102,65 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      buttonIsDisabled: false,
-      formValue: {}
+      akButtonDisabled: false,
+      akFormValue: {},
+      nativeButtonIsDisabled: false,
+      nativeFormValue: {}
     };
   }
   render() {
-    const { buttonIsDisabled, formValue } = this.state;
+    const {
+      akButtonDisabled,
+      akFormValue,
+      nativeButtonIsDisabled,
+      nativeFormValue
+    } = this.state;
     return (
       <div className="App">
-        <Form
-          fields={fields}
-          value={formValue}
-          onChange={(formValue, isValid) => {
-            this.setState({ formValue, buttonIsDisabled: !isValid });
-          }}
-          renderField={renderField}
-        />
-        <div>
-          <Button
-            appearance="primary"
-            isDisabled={buttonIsDisabled}
-            onClick={() => {
-              console.log('Form value is', this.state.formValue);
+        <section>
+          <Form
+            fields={fields}
+            value={akFormValue}
+            onChange={(akFormValue, isValid) => {
+              this.setState({ akFormValue, akButtonDisabled: !isValid });
             }}
-          >
-            OK
-          </Button>
-        </div>
+            renderField={renderAkField}
+          />
+          <div>
+            <Button
+              appearance="primary"
+              isDisabled={akButtonDisabled}
+              onClick={() => {
+                console.log('AtlasKit Form value is', this.state.akFormValue);
+              }}
+            >
+              OK
+            </Button>
+          </div>
+        </section>
+        <section>
+          <Form
+            fields={fields}
+            value={nativeFormValue}
+            onChange={(nativeFormValue, isValid) => {
+              this.setState({
+                nativeFormValue,
+                nativeButtonIsDisabled: !isValid
+              });
+            }}
+            renderField={renderNativeField}
+          />
+          <div>
+            <button
+              disabled={nativeButtonIsDisabled}
+              onClick={() => {
+                console.log('Native form value is', this.state.nativeFormValue);
+              }}
+            >
+              OK
+            </button>
+          </div>
+        </section>
       </div>
     );
   }
