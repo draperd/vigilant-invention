@@ -5,6 +5,7 @@ import FieldTextArea from '@atlaskit/field-text-area';
 import Checkbox from '@atlaskit/checkbox';
 import RadioGroup from '@atlaskit/field-radio-group';
 import SingleSelect from '@atlaskit/single-select';
+import MultiSelect from '@atlaskit/multi-select';
 import type { RenderField, FieldDef, OnChange } from './types';
 
 const renderField: RenderField = (field: FieldDef, onChange: OnChange) => {
@@ -14,12 +15,15 @@ const renderField: RenderField = (field: FieldDef, onChange: OnChange) => {
     id,
     isValid,
     name,
+    options = [],
     placeholder,
     required,
     type,
     value,
     label
   } = field;
+  let items;
+  let defaultSelected;
   const stringValue: string | void = value ? value.toString() : undefined;
   switch (type) {
     case 'text':
@@ -69,10 +73,7 @@ const renderField: RenderField = (field: FieldDef, onChange: OnChange) => {
       );
 
     case 'select':
-      const { options = [] } = field;
-
-      let defaultSelected = undefined;
-      const items = options.map(option => ({
+      items = options.map(option => ({
         heading: option.heading,
         items: option.items.map(item => {
           if (typeof item === 'string') {
@@ -119,9 +120,65 @@ const renderField: RenderField = (field: FieldDef, onChange: OnChange) => {
         </div>
       );
 
+    case 'multiselect':
+      const defaultSelectItems = [];
+      items = options.map(option => ({
+        heading: option.heading,
+        items: option.items.map(item => {
+          if (typeof item === 'string') {
+            let isSelected = false;
+            if (value && Array.isArray(value) && value.includes(item)) {
+              isSelected = true;
+            }
+            const _item = {
+              content: item,
+              value: item,
+              isSelected
+            };
+            if (_item.isSelected) {
+              defaultSelectItems.push(_item);
+            }
+            return _item;
+          } else {
+            let isSelected = false;
+            if (value && Array.isArray(value) && value.includes(item.value)) {
+              isSelected = true;
+            }
+            const _item = {
+              content: item.label || item.value,
+              value: item.value,
+              isSelected
+            };
+            if (_item.isSelected) {
+              defaultSelectItems.push(_item);
+            }
+            return _item;
+          }
+        })
+      }));
+
+      return (
+        <div key={id}>
+          <MultiSelect
+            key={id}
+            name={name}
+            label={label}
+            defaultSelected={defaultSelectItems}
+            placeholder={placeholder}
+            disabled={disabled}
+            required={required}
+            isInvalid={!isValid}
+            value={stringValue}
+            items={items}
+            onSelectedChange={evt => {
+              onChange(id, evt.items.map(item => item.value));
+            }}
+          />
+        </div>
+      );
+
     case 'radiogroup':
-      const { options: rbOptions = [] } = field;
-      const rbItems = rbOptions.reduce((itemsSoFar, option) => {
+      items = options.reduce((itemsSoFar, option) => {
         return itemsSoFar.concat(
           option.items.map(item => {
             if (typeof item === 'string') {
@@ -159,7 +216,7 @@ const renderField: RenderField = (field: FieldDef, onChange: OnChange) => {
           required={required}
           isInvalid={!isValid}
           value={stringValue}
-          items={rbItems}
+          items={items}
           onRadioChange={(evt: any) => onChange(id, evt.target.value)}
         />
       );

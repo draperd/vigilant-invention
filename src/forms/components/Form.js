@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import {
   calculateFormValue,
   processFields,
+  registerFields,
   updateFieldValue,
   validateAllFields
 } from './utils';
@@ -64,7 +65,8 @@ export default class Form extends Component<FormProps, FormState> {
   }
 
   componentWillMount() {
-    const { fields } = this.props;
+    let { fields, value } = this.props;
+    fields = registerFields(fields, value || {});
     this.onFormUpdates(fields);
   }
 

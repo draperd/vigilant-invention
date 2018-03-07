@@ -190,10 +190,13 @@ const createField: CreateFieldDef = field => {
   };
 };
 
-const registerFields: RegisterFields = fieldsToValidate => {
+const registerFields: RegisterFields = (fieldsToValidate, formValue) => {
   const fields = [];
   fieldsToValidate.forEach(field => {
     if (fieldDefIsValid(field, fields)) {
+      const { name, value, valueDelimiter } = field;
+      field.defaultValue = formValue[name] || value;
+      field.value = splitDelimitedValue(value, valueDelimiter);
       fields.push(field);
     }
   });

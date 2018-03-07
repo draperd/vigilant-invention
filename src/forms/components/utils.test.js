@@ -44,7 +44,7 @@ describe('registerFields', () => {
   const fields = [field1, field2, field3];
 
   test('fields with duplicate IDs are filtered out', () => {
-    const registeredFields = registerFields(fields);
+    const registeredFields = registerFields(fields, {});
     expect(registeredFields.length).toEqual(2);
     expect(registeredFields[0].id).toEqual('a');
     expect(registeredFields[1].id).toEqual('b');

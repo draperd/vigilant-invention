@@ -106,7 +106,7 @@ export type MapFieldsById = (FieldDef[]) => FieldsById;
 
 export type OnChange = (id: string, value: any) => void;
 
-export type RegisterFields = (FieldDef[]) => FieldDef[];
+export type RegisterFields = (FieldDef[], FormValue) => FieldDef[];
 
 export type UpdateFieldValue = (string, Value, FieldDef[]) => FieldDef[];
 

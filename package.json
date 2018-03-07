@@ -9,6 +9,7 @@
     "@atlaskit/field-range": "^2.6.0",
     "@atlaskit/field-text": "^4.2.0",
     "@atlaskit/field-text-area": "^1.2.0",
+    "@atlaskit/multi-select": "^8.1.1",
     "@atlaskit/single-select": "^3.3.1",
     "flow-bin": "^0.61.0",
     "flow-typed": "^2.3.0",
@@ -21,7 +22,10 @@
     "watchman": "^1.0.0"
   },
   "lint-staged": {
-    "src/**/*.{js,jsx,json,css}": ["prettier --single-quote --write", "git add"]
+    "src/**/*.{js,jsx,json,css}": [
+      "prettier --single-quote --write",
+      "git add"
+    ]
   },
   "scripts": {
     "precommit": "lint-staged",
