@@ -13,6 +13,7 @@ export type FieldDef = {
   name: string,
   placeholder?: string,
   type: string,
+  defaultValue?: void | string | number | boolean | Array<any>,
   value: void | string | number | boolean | Array<any>,
   visible?: boolean,
   required?: boolean,
@@ -24,7 +25,11 @@ export type FieldDef = {
   isValid?: boolean,
   errorMessages?: string,
   omitWhenHidden?: boolean,
-  omitWhenValueIs?: Value[]
+  omitWhenValueIs?: Value[],
+  useChangesAsValues?: boolean,
+  valueDelimiter?: string,
+  addedSuffix?: string,
+  removedSuffix?: string
 };
 
 export type Validator = string;
@@ -84,10 +89,13 @@ export type RegisterFields = (FieldDef[]) => FieldDef[];
 
 export type UpdateFieldValue = (string, Value, FieldDef[]) => FieldDef[];
 
-export type SplitDelimitedValue = (string, string) => string[] | string;
-export type JoinDeimitedValue = (string, string) => string;
-export type GetMissingItems = () => void;
-export type DetermineChangedValues = FieldDef => Value[];
+export type SplitDelimitedValue = (Value, ?string) => string[] | string;
+export type JoinDelimitedValue = (Value, ?string) => string | Value[];
+export type GetMissingItems<T> = (Array<T>, Array<T>) => Array<T>;
+export type DetermineChangedValues = FieldDef => Array<{
+  name: string,
+  value: Value
+}>;
 
 export type CalculateFormValue = (FieldDef[]) => FormValue;
 

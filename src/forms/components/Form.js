@@ -3,18 +3,10 @@ import React, { Component } from "react";
 import {
   calculateFormValue,
   processFields,
-  registerFields,
   updateFieldValue,
   validateAllFields
 } from "./utils";
-import type {
-  FieldDef,
-  FormProps,
-  FormState,
-  FormValue,
-  OnChange,
-  Value
-} from "./types";
+import type { FieldDef, FormProps, FormState, OnChange, Value } from "./types";
 
 type SampleFieldProps = {
   field: FieldDef,

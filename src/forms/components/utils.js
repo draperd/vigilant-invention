@@ -3,11 +3,11 @@ import type {
   CalculateFormValue,
   CreateFieldDef,
   DetermineChangedValues,
-  FieldDef,
-  FormState,
   EvaluateRule,
   EvaluateAllRules,
-  JoinDeimitedValue,
+  FieldDef,
+  GetMissingItems,
+  JoinDelimitedValue,
   MapFieldsById,
   OmitFieldValue,
   OnChange,
@@ -207,55 +207,63 @@ const updateFieldValue: UpdateFieldValue = (id, value, fields) => {
   return fields;
 };
 
-// const splitDelimitedValue: SplitDelimitedValue = (value, valueDelimiter) => {
-//   if (valueDelimiter) {
-//     if (typeof value === "string") {
-//       value = value.split(valueDelimiter);
-//     } else {
-//       value = [];
-//     }
-//   }
-//   return value;
-// };
+const splitDelimitedValue: SplitDelimitedValue = (value, valueDelimiter) => {
+  if (valueDelimiter) {
+    if (typeof value === "string") {
+      value = value.split(valueDelimiter);
+    } else {
+      value = [];
+    }
+  }
+  return value;
+};
 
-// const joinDelimitedValue: JoinDeimitedValue = (value, valueDelimiter) => {
-//   if (Array.isArray(value) && valueDelimiter) {
-//     value = value.join(valueDelimiter);
-//   }
-//   return value;
-// };
+const joinDelimitedValue: JoinDelimitedValue = (value, valueDelimiter) => {
+  if (Array.isArray(value) && valueDelimiter) {
+    value = value.join(valueDelimiter);
+  }
+  return value;
+};
 
-// const getMissingItems = ({ missingFrom, foundIn }) => {
-//   return foundIn.reduce((missingItems, item) => {
-//     !missingFrom.includes(item) && missingItems.push(item);
-//     return missingItems;
-//   }, []);
-// };
+const getMissingItems: GetMissingItems<Value> = (missingFrom, foundIn) => {
+  return foundIn.reduce((missingItems, item) => {
+    !missingFrom.includes(item) && missingItems.push(item);
+    return missingItems;
+  }, []);
+};
 
-// const determineChangedValues: DetermineChangedValues = field => {
-//   const { name, initialValue, value } = field;
-//   valueDelimiter, (addedSuffix = "_added"), (removedSuffix = "_removed");
-//   const outputValues = [];
-//   initialValue = splitDelimitedValue(initialValue, valueDelimiter);
+const determineChangedValues: DetermineChangedValues = field => {
+  const {
+    name,
+    defaultValue,
+    value,
+    valueDelimiter,
+    addedSuffix = "_added",
+    removedSuffix = "_removed"
+  } = field;
+  const outputValues = [];
 
-//   let added = getMissingItems(value, initialValue);
-//   let removed = getMissingItems(initialValue, value);
+  let initialValue = splitDelimitedValue(defaultValue, valueDelimiter);
+  if (Array.isArray(initialValue) && Array.isArray(value)) {
+    let added = getMissingItems(initialValue, value);
+    let removed = getMissingItems(value, initialValue);
 
-//   added = joinDelimitedValue(added, valueDelimiter);
-//   removed = joinDelimitedValue(removed, valueDelimiter);
+    added = joinDelimitedValue(added, valueDelimiter);
+    removed = joinDelimitedValue(removed, valueDelimiter);
 
-//   outputValues.push(
-//     {
-//       name: name + addedSuffix,
-//       value: added
-//     },
-//     {
-//       name: name + removedSuffix,
-//       value: removed
-//     }
-//   );
-//   return outputValues;
-// };
+    outputValues.push(
+      {
+        name: name + addedSuffix,
+        value: added
+      },
+      {
+        name: name + removedSuffix,
+        value: removed
+      }
+    );
+  }
+  return outputValues;
+};
 
 const shouldOmitFieldValue: OmitFieldValue = field => {
   const { omitWhenHidden, omitWhenValueIs = [], visible, value } = field;
@@ -268,26 +276,17 @@ const shouldOmitFieldValue: OmitFieldValue = field => {
 
 const calculateFormValue: CalculateFormValue = fields => {
   return fields.reduce((formValue, field) => {
-    const { name, value } = field;
+    const { name, value, useChangesAsValues } = field;
     if (shouldOmitFieldValue(field)) {
       return formValue;
+    } else if (useChangesAsValues) {
+      determineChangedValues(field).forEach(
+        ({ name, value }) => (formValue[name] = value)
+      );
     } else {
       formValue[name] = value;
     }
-    // else if (field.name) {
-    //   if (field.useChangesAsValues) {
-    //     determineChangedValues(field).forEach(
-    //       ({ name, value }) => (formValue[name] = value)
-    //     );
-    //   } else {
-    //     formValue[field.name] = field.value;
-    //   }
-    // } else {
-    //   console.warn(
-    //     "Cannot set a value because no 'name' attribute is present on the field",
-    //     field
-    //   );
-    // }
+
     return formValue;
   }, {});
 };
@@ -295,14 +294,18 @@ const calculateFormValue: CalculateFormValue = fields => {
 export {
   calculateFormValue,
   createField,
+  determineChangedValues,
   evaluateRule,
   evaluateAllRules,
   fieldDefIsValid,
+  getMissingItems,
+  joinDelimitedValue,
   mapFieldsById,
   mapFieldDefToComponent,
   processFields,
   registerFields,
   shouldOmitFieldValue,
+  splitDelimitedValue,
   updateFieldValue,
   valuesMatch,
   validateField,

@@ -2,13 +2,17 @@
 import {
   calculateFormValue,
   createField,
+  determineChangedValues,
   evaluateRule,
   evaluateAllRules,
   fieldDefIsValid,
+  getMissingItems,
+  joinDelimitedValue,
   mapFieldsById,
   shouldOmitFieldValue,
   processFields,
   registerFields,
+  splitDelimitedValue,
   updateFieldValue,
   validateField
 } from "./utils";
@@ -298,6 +302,19 @@ describe("calculateFormValue", () => {
   test("last field wins", () => {
     expect(value.test3).toEqual("ted");
   });
+
+  test("get added and removed values", () => {
+    const field1 = {
+      ...baseField,
+      defaultValue: "1,2,3",
+      value: ["2", "4", "5"], // HERE BE DRAGONS - will the new value really always be an array?
+      valueDelimiter: ",",
+      useChangesAsValues: true
+    };
+    const value = calculateFormValue([field1]);
+    expect(value.test_added).toEqual("4,5");
+    expect(value.test_removed).toEqual("1,3");
+  });
 });
 
 describe("updateFieldValue", () => {
@@ -310,5 +327,60 @@ describe("updateFieldValue", () => {
 
   test("field is updated with new value", () => {
     expect(fieldsById.B.value).toEqual("oink");
+  });
+});
+
+describe("joinDelimitedValue", () => {
+  test("join with commas", () => {
+    expect(joinDelimitedValue([1, 2, 3], ",")).toEqual("1,2,3");
+  });
+
+  test("leave non-array values as-id", () => {
+    expect(joinDelimitedValue("test", ",")).toEqual("test");
+  });
+});
+
+describe("splitDelimitedValue", () => {
+  test("split on commas", () => {
+    // NOTE: Always becomes an array of strings
+    //       Is this worth parsing?
+    expect(splitDelimitedValue("1,2,3", ",")).toEqual(["1", "2", "3"]);
+  });
+
+  test("create an array from an non-delimited value", () => {
+    expect(splitDelimitedValue("test", ",")).toEqual(["test"]);
+  });
+
+  test("leave value as is if no delimiter provided", () => {
+    expect(splitDelimitedValue("test")).toEqual("test");
+  });
+});
+
+describe("getMissingItems", () => {
+  test("a is missing from [b,c] but is in [a,b,c]", () => {
+    expect(getMissingItems(["b", "c"], ["a", "b", "c"])).toEqual(["a"]);
+  });
+});
+
+describe("determineChangedValues", () => {
+  const field: FieldDef = {
+    id: "TEST",
+    name: "foo",
+    type: "text",
+    value: ["a", "c", "e", "f"],
+    defaultValue: ["a", "b", "c", "d"]
+  };
+
+  const changes = determineChangedValues(field);
+  test("output structure is correct", () => {
+    expect(changes.length).toEqual(2);
+    expect(changes[0].name).toEqual("foo_added");
+    expect(changes[1].name).toEqual("foo_removed");
+  });
+  test("e and f were added", () => {
+    expect(changes[0].value).toEqual(["e", "f"]);
+  });
+  test("b and d were removed", () => {
+    expect(changes[1].value).toEqual(["b", "d"]);
   });
 });

@@ -3,7 +3,6 @@ import logo from "./logo.svg";
 import "./App.css";
 
 import Form from "./forms/components/Form";
-import { createField } from "./forms/components/utils";
 import type { FieldDef } from "./forms/components/types";
 
 const fields: FieldDef[] = [
