@@ -55,6 +55,45 @@ const fields: FieldDef[] = [
     label: 'Show Age Field',
     value: true,
     type: 'checkbox'
+  },
+  {
+    id: 'PICK',
+    name: 'picker',
+    label: 'Choose one',
+    placeholder: 'Pick an item',
+    value: 'b',
+    type: 'select',
+    options: [
+      {
+        items: ['a', 'b', 'c']
+      }
+    ]
+  },
+  {
+    id: 'PICKAGAIN',
+    name: 'colours',
+    label: 'Choose a colour',
+    placeholder: 'Pick a colour',
+    value: 'G',
+    type: 'radiogroup',
+    options: [
+      {
+        items: [
+          {
+            label: 'Green',
+            value: 'G'
+          },
+          {
+            label: 'Red',
+            value: 'R'
+          },
+          {
+            label: 'Blue',
+            value: 'B'
+          }
+        ]
+      }
+    ]
   }
 ];
 

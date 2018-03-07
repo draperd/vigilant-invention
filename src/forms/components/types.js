@@ -30,8 +30,24 @@ export type FieldDef = {
   useChangesAsValues?: boolean,
   valueDelimiter?: string,
   addedSuffix?: string,
-  removedSuffix?: string
+  removedSuffix?: string,
+  options?: OptionGroup[]
 };
+
+export type Option =
+  | {
+      label?: string,
+      value: Value,
+      misc?: any
+    }
+  | string;
+
+export type OptionGroup = {
+  heading?: string,
+  items: Option[]
+};
+
+export type Options = Option[] | OptionGroup[];
 
 export type Validator = string;
 

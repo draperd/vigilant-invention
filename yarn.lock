@@ -3,8 +3,8 @@
 
 
 "@atlaskit/analytics-next@^1.0.2":
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/@atlaskit/analytics-next/-/analytics-next-1.0.3.tgz#de73cd7ad5e4ee356b3b7698e4be06e2c76228a2"
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@atlaskit/analytics-next/-/analytics-next-1.1.0.tgz#be5194b7a3667766dace324c7b3f03e59ef538b2"
   dependencies:
     clone-deep "^3.0.1"
     prop-types "^15.5.10"
@@ -54,6 +54,24 @@
     "@atlaskit/spinner" "^4.2.0"
     "@atlaskit/theme" "^2.4.0"
     babel-runtime "^6.26.0"
+    styled-components "1.4.6 - 3"
+
+"@atlaskit/field-radio-group@^1.9.0":
+  version "1.9.0"
+  resolved "https://registry.yarnpkg.com/@atlaskit/field-radio-group/-/field-radio-group-1.9.0.tgz#8fe4122f3a3d51c37e72ce27a78eca6c45d80045"
+  dependencies:
+    "@atlaskit/field-base" "^8.2.0"
+    "@atlaskit/icon" "^10.12.0"
+    "@atlaskit/theme" "^2.4.0"
+    styled-components "1.4.6 - 3"
+
+"@atlaskit/field-range@^2.6.0":
+  version "2.6.0"
+  resolved "https://registry.yarnpkg.com/@atlaskit/field-range/-/field-range-2.6.0.tgz#3b122fb5c5683cf41cc7a4e394d527a5fdb280dc"
+  dependencies:
+    "@atlaskit/util-shared-styles" "^2.10.3"
+    babel-runtime "^6.26.0"
+    prop-types "^15.5.10"
     styled-components "1.4.6 - 3"
 
 "@atlaskit/field-text-area@^1.2.0":
@@ -170,7 +188,7 @@
     react-syntax-highlighter "^3.0.2"
     styled-components "^1.4.6"
 
-"@atlaskit/util-shared-styles@^2.0.1":
+"@atlaskit/util-shared-styles@^2.0.1", "@atlaskit/util-shared-styles@^2.10.3":
   version "2.10.6"
   resolved "https://registry.yarnpkg.com/@atlaskit/util-shared-styles/-/util-shared-styles-2.10.6.tgz#56aa25d59cef0324f653a6e857d512a70be47c65"
   dependencies:
@@ -3199,9 +3217,9 @@ flatten@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/flatten/-/flatten-1.0.2.tgz#dae46a9d78fbe25292258cc1e780a41d95c03782"
 
-flow-bin@^0.66.0:
-  version "0.66.0"
-  resolved "https://registry.yarnpkg.com/flow-bin/-/flow-bin-0.66.0.tgz#a96dde7015dc3343fd552a7b4963c02be705ca26"
+flow-bin@^0.61.0:
+  version "0.61.0"
+  resolved "https://registry.yarnpkg.com/flow-bin/-/flow-bin-0.61.0.tgz#d0473a8c35dbbf4de573823f4932124397d32d35"
 
 flow-typed@^2.3.0:
   version "2.3.0"

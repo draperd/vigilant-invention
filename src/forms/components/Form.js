@@ -74,7 +74,7 @@ export default class Form extends Component<FormProps, FormState> {
     this.onFormUpdates(fields);
   }
 
-  renderField(field: FieldDef) {
+  renderField(field: FieldDef, onChange: OnChange) {
     const { visible } = field;
     if (!visible) {
       return null;
@@ -91,11 +91,12 @@ export default class Form extends Component<FormProps, FormState> {
   render() {
     const { fields } = this.state;
     const { renderField = this.renderField } = this.props;
+    const onFieldChange = this.onFieldChange.bind(this);
 
     const renderedFields = fields.map(field => {
       const { visible } = field;
       if (visible) {
-        return renderField(field, this.onFieldChange.bind(this));
+        return renderField(field, onFieldChange);
       }
       return null;
     });
