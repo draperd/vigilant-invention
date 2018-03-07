@@ -11,6 +11,7 @@ export type Rule = {
 export type FieldDef = {
   id: string,
   name: string,
+  label?: string,
   placeholder?: string,
   type: string,
   defaultValue?: void | string | number | boolean | Array<any>,
@@ -47,7 +48,8 @@ export type OnFormChange = (FormValue, boolean) => void;
 export type FormProps = {
   fields: FieldDef[],
   value?: FormValue,
-  onChange?: OnFormChange
+  onChange?: OnFormChange,
+  renderField?: RenderField
 };
 
 export type FormState = {
@@ -100,3 +102,5 @@ export type DetermineChangedValues = FieldDef => Array<{
 export type CalculateFormValue = (FieldDef[]) => FormValue;
 
 export type OmitFieldValue = FieldDef => boolean;
+
+export type RenderField = (FieldDef, OnChange) => any;

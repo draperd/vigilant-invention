@@ -1,50 +1,61 @@
-import React, { Component } from "react";
-import logo from "./logo.svg";
-import "./App.css";
+import React, { Component } from 'react';
+import Button from '@atlaskit/button';
+import './App.css';
 
-import Form from "./forms/components/Form";
-import type { FieldDef } from "./forms/components/types";
+import Form from './forms/components/Form';
+import renderField from './forms/components/AtlasKitFields';
+import type { FieldDef } from './forms/components/types';
 
 const fields: FieldDef[] = [
   {
-    id: "NAME",
-    name: "name",
-    value: "bob",
-    type: "text",
+    id: 'NAME',
+    name: 'name',
+    label: 'Name?',
+    value: 'bob',
+    type: 'text',
     required: true
   },
   {
-    id: "NAME2",
-    name: "name",
-    placeholder: "Enter name...",
-    value: "",
+    id: 'NAME2',
+    name: 'address',
+    label: 'Address',
+    type: 'textarea',
+    placeholder: 'Enter address...',
+    value: '',
     required: true,
     visibleWhen: [
       {
-        fieldId: "NAME",
-        isNot: ["hide"]
+        fieldId: 'NAME',
+        isNot: ['hide']
       }
     ],
     disabledWhen: [
       {
-        fieldId: "NAME",
-        is: ["lock"]
+        fieldId: 'NAME',
+        is: ['lock']
       }
     ]
   },
   {
-    id: "AGE",
-    name: "age",
+    id: 'AGE',
+    name: 'age',
+    label: 'Age?',
     value: 18,
-    type: "number",
+    type: 'text',
     visibleWhen: [
       {
-        fieldId: "SHOW",
+        fieldId: 'SHOW',
         isNot: [false]
       }
     ]
   },
-  { id: "SHOW", name: "show", value: true, type: "checkbox" }
+  {
+    id: 'SHOW',
+    name: 'show',
+    label: 'Show Age Field',
+    value: true,
+    type: 'checkbox'
+  }
 ];
 
 class App extends Component {
@@ -59,26 +70,25 @@ class App extends Component {
     const { buttonIsDisabled, formValue } = this.state;
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
         <Form
           fields={fields}
-          vale={formValue}
-          onChange={(formValue, isValid) =>
-            this.setState({ formValue, buttonIsDisabled: !isValid })
-          }
+          value={formValue}
+          onChange={(formValue, isValid) => {
+            this.setState({ formValue, buttonIsDisabled: !isValid });
+          }}
+          renderField={renderField}
         />
-        <button
-          disabled={buttonIsDisabled}
-          onClick={() => console.log("Form value is", formValue)}
-        >
-          OK
-        </button>
+        <div>
+          <Button
+            appearance="primary"
+            isDisabled={buttonIsDisabled}
+            onClick={() => {
+              console.log('Form value is', this.state.formValue);
+            }}
+          >
+            OK
+          </Button>
+        </div>
       </div>
     );
   }

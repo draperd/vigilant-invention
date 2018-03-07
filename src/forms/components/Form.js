@@ -1,12 +1,12 @@
 // @flow
-import React, { Component } from "react";
+import React, { Component } from 'react';
 import {
   calculateFormValue,
   processFields,
   updateFieldValue,
   validateAllFields
-} from "./utils";
-import type { FieldDef, FormProps, FormState, OnChange, Value } from "./types";
+} from './utils';
+import type { FieldDef, FormProps, FormState, OnChange, Value } from './types';
 
 type SampleFieldProps = {
   field: FieldDef,
@@ -17,7 +17,7 @@ class SampleField extends Component<SampleFieldProps, void> {
   render() {
     const { field, onChange } = this.props;
     const { name, id, value, type, placeholder, disabled, required } = field;
-    const checked = type === "checkbox" ? value : undefined;
+    const checked = type === 'checkbox' ? value : undefined;
     return (
       <div>
         <input
@@ -32,7 +32,7 @@ class SampleField extends Component<SampleFieldProps, void> {
           onChange={evt =>
             onChange(
               id,
-              type === "checkbox" ? evt.target.checked : evt.target.value
+              type === 'checkbox' ? evt.target.checked : evt.target.value
             )
           }
         />
@@ -90,7 +90,15 @@ export default class Form extends Component<FormProps, FormState> {
 
   render() {
     const { fields } = this.state;
-    const renderedFields = fields.map(field => this.renderField(field));
+    const { renderField = this.renderField } = this.props;
+
+    const renderedFields = fields.map(field => {
+      const { visible } = field;
+      if (visible) {
+        return renderField(field, this.onFieldChange.bind(this));
+      }
+      return null;
+    });
     return renderedFields;
   }
 }
