@@ -70,6 +70,14 @@ export default class Form extends Component<FormProps, FormState> {
     this.onFormUpdates(fields);
   }
 
+  componentWillReceiveProps(nextProps: FormProps) {
+    if (nextProps.fields !== this.props.fields) {
+      let { fields, value } = nextProps;
+      fields = registerFields(fields, value || {});
+      this.onFormUpdates(fields);
+    }
+  }
+
   onFieldChange(id: string, value: Value) {
     let { fields } = this.state;
     fields = updateFieldValue(id, value, fields);

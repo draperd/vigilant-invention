@@ -8,7 +8,13 @@ const form1: FieldDef[] = [
     label: 'Name?',
     value: 'bob',
     type: 'text',
-    required: true
+    required: true,
+    validWhen: {
+      lengthIsGreaterThan: {
+        length: 4,
+        message: 'Name is too short!'
+      }
+    }
   },
   {
     id: 'NAME2',
@@ -105,4 +111,62 @@ const form1: FieldDef[] = [
   }
 ];
 
-export { form1 };
+const formBuilder = [
+  {
+    id: 'ID',
+    name: 'id',
+    type: 'text',
+    required: true,
+    value: '',
+    label: 'ID',
+    placeholder: 'Enter a unique ID...'
+  },
+  {
+    id: 'NAME',
+    name: 'name',
+    type: 'text',
+    required: true,
+    value: '',
+    label: 'Name',
+    placeholder: 'Enter the name for the field'
+  },
+  {
+    id: 'TYPE',
+    name: 'type',
+    type: 'select',
+    value: 'text',
+    label: 'Type',
+    placeholder: 'Choose a field type',
+    options: [
+      { items: ['text', 'textarea', 'select', 'radiogroup', 'checkbox'] }
+    ]
+  },
+  {
+    id: 'LABEL',
+    name: 'label',
+    type: 'text',
+    required: false,
+    value: '',
+    label: 'Label',
+    placeholder: 'Enter the label for the field'
+  },
+  {
+    id: 'PLACEHOLDER',
+    name: 'placeholder',
+    type: 'text',
+    required: false,
+    value: '',
+    label: 'Placeholder Text',
+    placeholder: 'Placeholder...'
+  },
+  {
+    id: 'VALUE',
+    name: 'value',
+    type: 'text',
+    value: '',
+    label: 'Initial value',
+    placeholder: 'Enter initial value for the field...'
+  }
+];
+
+export { form1, formBuilder };

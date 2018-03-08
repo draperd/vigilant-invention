@@ -36,7 +36,7 @@ const renderField: RenderField = (field: FieldDef, onChange: OnChange) => {
           disabled={disabled}
           required={required}
           isInvalid={!isValid}
-          invalid={errorMessages}
+          invalidMessage={errorMessages}
           value={stringValue}
           onChange={(evt: any) => onChange(id, evt.target.value)}
         />
