@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import Form from './Form';
 import renderField from './AtlasKitFields';
-import type { FieldDef } from './types';
+import type { FieldDef, FormValue } from './types';
 import { formBuilder } from '../../definitions';
 
 type Props = {};
@@ -21,33 +21,29 @@ export default class FormBuilder extends Component<Props, State> {
     };
   }
 
-  addField() {
-    const { builderFields } = this.state;
-    const targetIndex = builderFields.length;
-    builderFields[targetIndex] = (
-      <Form
-        key={targetIndex}
-        fields={formBuilder}
-        renderField={renderField}
-        onChange={(value, isValid) => {
-          const { previewFields } = this.state;
-          previewFields[targetIndex] = value;
-          this.setState({
-            previewFields
-          });
-        }}
-      />
-    );
-    this.setState({ builderFields });
+  onBuilderFormChange(value: FormValue, isValid: boolean) {
+    this.setState({
+      previewFields: value.fields
+    });
+  }
+
+  fetchOptions(id: string) {
+    console.log('Fetching options for ', id);
+    return;
   }
   render() {
-    const { previewFields, builderFields } = this.state;
+    const { previewFields } = this.state;
     return (
       <div className="App">
         <section>
-          <div>Builder</div>
-          <div>{builderFields}</div>
-          <button onClick={() => this.addField()}>Add Field</button>
+          <Form
+            fields={formBuilder}
+            renderField={renderField}
+            onChange={(value, isValid) =>
+              this.onBuilderFormChange(value, isValid)
+            }
+            optionsHandler={id => this.fetchOptions(id)}
+          />
         </section>
         <section>
           <div>Preview</div>

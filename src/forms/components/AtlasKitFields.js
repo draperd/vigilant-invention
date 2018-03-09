@@ -6,6 +6,7 @@ import Checkbox from '@atlaskit/checkbox';
 import RadioGroup from '@atlaskit/field-radio-group';
 import SingleSelect from '@atlaskit/single-select';
 import MultiSelect from '@atlaskit/multi-select';
+import RepeatingFormField from './RepeatingFormField';
 import type { RenderField, FieldDef, OnChange } from './types';
 
 const renderField: RenderField = (field: FieldDef, onChange: OnChange) => {
@@ -20,7 +21,8 @@ const renderField: RenderField = (field: FieldDef, onChange: OnChange) => {
     required,
     type,
     value,
-    label
+    label,
+    misc = {}
   } = field;
   let items;
   let defaultSelected;
@@ -218,6 +220,22 @@ const renderField: RenderField = (field: FieldDef, onChange: OnChange) => {
           value={stringValue}
           items={items}
           onRadioChange={(evt: any) => onChange(id, evt.target.value)}
+        />
+      );
+
+    case 'repeating':
+      const fields: FieldDef[] = misc.fields || [];
+      const addButtonLabel: string = misc.addButtonLabel;
+      const unidentifiedLabel: string = misc.unidentifiedLabel;
+      const noItemsMessage: string = misc.noItemsMessage;
+      return (
+        <RepeatingFormField
+          addButtonLabel={addButtonLabel}
+          label={label}
+          onChange={value => onChange(id, value)}
+          fields={fields}
+          unidentifiedLabel={unidentifiedLabel}
+          noItemsMessage={noItemsMessage}
         />
       );
 

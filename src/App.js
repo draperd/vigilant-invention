@@ -6,7 +6,6 @@ import Form from './forms/components/Form';
 import renderAkField from './forms/components/AtlasKitFields';
 import renderNativeField from './forms/components/NativeFields';
 import FormBuilder from './forms/components/FormBuilder';
-import RepeatingFormField from './forms/components/RepeatingFormField';
 
 import { form1 } from './definitions';
 
@@ -80,7 +79,6 @@ class App extends Component {
         </div>
         <div>
           <FormBuilder />
-          <RepeatingFormField />
         </div>
       </div>
     );

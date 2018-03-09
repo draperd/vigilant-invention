@@ -12,6 +12,7 @@ import type {
   OmitFieldValue,
   OnChange,
   ProcessFields,
+  ProcessOptions,
   RegisterFields,
   SplitDelimitedValue,
   UpdateFieldValue,
@@ -99,6 +100,17 @@ const processFields: ProcessFields = fields => {
     });
   });
   return updatedFields;
+};
+
+const processOptions: ProcessOptions = (fields, optionsHandler) => {
+  return fields.map(field => {
+    const { id } = field;
+    const options = optionsHandler(id);
+    if (options) {
+      field.options = options;
+    }
+    return field;
+  });
 };
 
 const mapFieldsById: MapFieldsById = fields => {
@@ -306,6 +318,7 @@ export {
   mapFieldsById,
   mapFieldDefToComponent,
   processFields,
+  processOptions,
   registerFields,
   shouldOmitFieldValue,
   splitDelimitedValue,

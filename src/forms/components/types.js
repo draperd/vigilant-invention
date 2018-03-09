@@ -31,7 +31,7 @@ export type FieldDef = {
   valueDelimiter?: string,
   addedSuffix?: string,
   removedSuffix?: string,
-  options?: OptionGroup[],
+  options?: Options,
   misc?: {
     [string]: any
   }
@@ -50,7 +50,7 @@ export type OptionGroup = {
   items: Option[]
 };
 
-export type Options = Option[] | OptionGroup[];
+export type Options = OptionGroup[];
 
 export type Validator = string;
 
@@ -64,11 +64,14 @@ export type FormValue = {
 
 export type OnFormChange = (FormValue, boolean) => void;
 
+export type OptionsHander = string => Options | void;
+
 export type FormProps = {
   fields: FieldDef[],
   value?: FormValue,
   onChange?: OnFormChange,
-  renderField?: RenderField
+  renderField?: RenderField,
+  optionsHandler?: OptionsHander
 };
 
 export type FormState = {
@@ -90,6 +93,7 @@ export type EvaluateAllRules = (
 ) => boolean;
 
 export type ProcessFields = (FieldDef[]) => FieldDef[];
+export type ProcessOptions = (FieldDef[], OptionsHander) => FieldDef[];
 
 export type ValidationResult = {
   isValid: boolean,

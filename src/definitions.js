@@ -111,7 +111,49 @@ const form1: FieldDef[] = [
   }
 ];
 
-const formBuilder = [
+const simpleValue = [
+  {
+    id: 'VALUE',
+    name: 'id',
+    type: 'text',
+    label: 'Value',
+    placeholder: 'Value...',
+    required: true
+  }
+];
+
+const fieldRules = [
+  {
+    id: 'ID',
+    name: 'id',
+    type: 'text',
+    label: 'Description of the rule',
+    placeholder: 'What does this rule do?',
+    required: true
+  },
+  {
+    id: 'FIELD',
+    name: 'field',
+    type: 'text',
+    label: 'Field',
+    placeholder: 'Field to test...',
+    required: true
+  },
+  {
+    id: 'IS',
+    name: 'is',
+    type: 'repeating',
+    label: 'Is one of the following values...',
+    misc: {
+      fields: simpleValue,
+      addButtonLabel: 'Add value',
+      unidentifiedLabel: 'No Value',
+      noItemsMessage: 'No values added'
+    }
+  }
+];
+
+const field = [
   {
     id: 'ID',
     name: 'id',
@@ -166,7 +208,35 @@ const formBuilder = [
     value: '',
     label: 'Initial value',
     placeholder: 'Enter initial value for the field...'
+  },
+  {
+    id: 'VISIBLE_WHEN',
+    name: 'visibleWhen',
+    type: 'repeating',
+    label: 'This field is visible when...',
+    value: [],
+    misc: {
+      fields: fieldRules,
+      addButtonLabel: 'Add Rule',
+      unidentifiedLabel: 'Unidentified rule'
+    }
   }
 ];
 
-export { form1, formBuilder };
+const formBuilder = [
+  {
+    id: 'FORM',
+    name: 'fields',
+    type: 'repeating',
+    label: 'Form Definition',
+    value: [],
+    misc: {
+      addButtonLabel: 'Add Field',
+      unidentifiedLabel: 'Unidentified field',
+      noItemsMessage: 'No fields configured yet!',
+      fields: field
+    }
+  }
+];
+
+export { form1, formBuilder, field };

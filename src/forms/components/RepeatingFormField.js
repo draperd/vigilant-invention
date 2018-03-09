@@ -7,7 +7,6 @@ import Button from '@atlaskit/button';
 import ChevronDownIcon from '@atlaskit/icon/glyph/chevron-down';
 import ChevronRightIcon from '@atlaskit/icon/glyph/chevron-right';
 import CrossCircleIcon from '@atlaskit/icon/glyph/cross-circle';
-import { formBuilder } from '../../definitions';
 import './RepeatingFormField.css';
 
 type ChevronProps = {
@@ -51,7 +50,7 @@ class Chevron extends PureComponent<ChevronProps, ChevronState> {
 
   render() {
     const { isExpanded /*ariaControls*/ } = this.props;
-    const { isFocused, isHovered } = this.state;
+    // const { isFocused, isHovered } = this.state;
     const iconProps = {
       size: 'medium'
       //   primaryColor: isHovered || isFocused ? iconColorFocus : iconColor
@@ -114,72 +113,96 @@ class Expander extends Component<ExpanderProps, ExpanderState> {
           className="content"
           style={{ display: isExpanded ? 'block' : 'none' }}
         >
-          {this.props.children}
+          {children}
         </div>
       </div>
     );
   }
 }
 
-type Props = {};
+type Props = {
+  label?: string,
+  addButtonLabel?: string,
+  unidentifiedLabel?: string,
+  noItemsMessage?: string,
+  fields: FieldDef[],
+  onChange?: any => void
+};
 
 type State = {
-  previewFields: FieldDef[],
-  builderFields: Array<any>,
-  isExpanded: boolean
+  items: Array<any>,
+  values: Array<any>
 };
 
 export default class RepeatingFormField extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      previewFields: [],
-      builderFields: [],
-      isExpanded: false
+      items: [],
+      values: []
     };
   }
 
-  addField() {
-    const { builderFields } = this.state;
-    const targetIndex = builderFields.length;
-    builderFields[targetIndex] = (
+  addItem() {
+    const { fields } = this.props;
+    const { items } = this.state;
+    const targetIndex = items.length;
+    items[targetIndex] = (
       <Form
-        key={targetIndex}
-        fields={formBuilder}
+        key={`FIELD_${targetIndex}`}
+        fields={fields}
         renderField={renderField}
         onChange={(value, isValid) => {
-          const { previewFields } = this.state;
-          previewFields[targetIndex] = value;
-          this.setState({
-            previewFields
-          });
+          const { values } = this.state;
+          values[targetIndex] = value;
+          this.setState(
+            {
+              values
+            },
+            () => {
+              const { onChange } = this.props;
+              const { values } = this.state;
+              onChange && onChange(values);
+            }
+          );
         }}
       />
     );
-    this.setState({ builderFields });
+    this.setState({ items });
   }
 
-  removeField(index: number) {
-    const { builderFields, previewFields } = this.state;
-    this.setState({
-      previewFields: previewFields.filter((f, i) => index !== i),
-      builderFields: builderFields.filter((f, i) => index !== i)
-    });
+  removeItem(index: number) {
+    const { items, values } = this.state;
+    this.setState(
+      {
+        items: items.filter((f, i) => index !== i),
+        values: values.filter((f, i) => index !== i)
+      },
+      () => {
+        const { onChange } = this.props;
+        const { values } = this.state;
+        onChange && onChange(values);
+      }
+    );
   }
 
   render() {
-    const { previewFields, builderFields, isExpanded } = this.state;
+    const { items, values } = this.state;
+    const {
+      label = 'Item',
+      addButtonLabel = 'Add item',
+      unidentifiedLabel = 'Unidentified item',
+      noItemsMessage = 'No items yet'
+    } = this.props;
 
-    const builders = builderFields.map((builder, index) => {
-      const label =
-        (previewFields[index] && previewFields[index].id) ||
-        'Unidentified field';
+    const fields = items.map((builder, index) => {
+      const label = (values[index] && values[index].id) || unidentifiedLabel;
       return (
         <Expander
           key={`exp_${index}`}
           label={label}
           remove={() => {
-            this.removeField(index);
+            this.removeItem(index);
           }}
         >
           {builder}
@@ -188,16 +211,10 @@ export default class RepeatingFormField extends Component<Props, State> {
     });
 
     return (
-      <div className="App">
-        <section>
-          <div>Builder</div>
-          <div>{builders}</div>
-          <Button onClick={() => this.addField()}>Add Field</Button>
-        </section>
-        <section>
-          <div>Preview</div>
-          <Form fields={previewFields.slice()} renderField={renderField} />
-        </section>
+      <div>
+        <div>{label}</div>
+        <div>{fields.length > 0 ? fields : noItemsMessage}</div>
+        <Button onClick={() => this.addItem()}>{addButtonLabel}</Button>
       </div>
     );
   }

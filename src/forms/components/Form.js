@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import {
   calculateFormValue,
   processFields,
+  processOptions,
   registerFields,
   updateFieldValue,
   validateAllFields
@@ -44,7 +45,11 @@ class SampleField extends Component<SampleFieldProps, void> {
 
 export default class Form extends Component<FormProps, FormState> {
   onFormUpdates(fields: FieldDef[]) {
+    const { optionsHandler } = this.props;
     fields = processFields(fields);
+    if (optionsHandler) {
+      fields = processOptions(fields, optionsHandler);
+    }
     fields = validateAllFields(fields);
     const value = calculateFormValue(fields);
     const isValid = fields.every(field => field.isValid);
