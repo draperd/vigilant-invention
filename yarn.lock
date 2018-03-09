@@ -104,6 +104,15 @@
     styled-components "1.4.6 - 3"
     uuid "^3.1.0"
 
+"@atlaskit/icon@^10.12.1":
+  version "10.12.1"
+  resolved "https://registry.yarnpkg.com/@atlaskit/icon/-/icon-10.12.1.tgz#3f1112ed4b75fc2bca31870e6b1299b3c647d271"
+  dependencies:
+    "@atlaskit/theme" "^2.4.1"
+    babel-runtime "^6.26.0"
+    styled-components "1.4.6 - 3"
+    uuid "^3.1.0"
+
 "@atlaskit/inline-dialog@^5.3.0":
   version "5.3.1"
   resolved "https://registry.yarnpkg.com/@atlaskit/inline-dialog/-/inline-dialog-5.3.1.tgz#3d48d75098c796c3d971bf7fcc0e2be26e2b9743"
@@ -197,6 +206,13 @@
 "@atlaskit/theme@^2.4.0":
   version "2.4.0"
   resolved "https://registry.yarnpkg.com/@atlaskit/theme/-/theme-2.4.0.tgz#03e34fd1424cbdadbce52ccb922b52901bc1c12c"
+  dependencies:
+    prop-types "^15.5.10"
+    styled-components "1.4.6 - 3"
+
+"@atlaskit/theme@^2.4.1":
+  version "2.4.1"
+  resolved "https://registry.yarnpkg.com/@atlaskit/theme/-/theme-2.4.1.tgz#a554075068ff4d85542292998f3544160b4a5a73"
   dependencies:
     prop-types "^15.5.10"
     styled-components "1.4.6 - 3"

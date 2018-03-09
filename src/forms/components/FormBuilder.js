@@ -26,6 +26,7 @@ export default class FormBuilder extends Component<Props, State> {
     const targetIndex = builderFields.length;
     builderFields[targetIndex] = (
       <Form
+        key={targetIndex}
         fields={formBuilder}
         renderField={renderField}
         onChange={(value, isValid) => {
