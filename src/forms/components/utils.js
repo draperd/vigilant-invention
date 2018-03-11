@@ -1,4 +1,5 @@
 // @flow
+// import set from 'lodash/get';
 import type {
   CalculateFormValue,
   CreateFieldDef,
@@ -299,6 +300,7 @@ const calculateFormValue: CalculateFormValue = fields => {
         ({ name, value }) => (formValue[name] = value)
       );
     } else {
+      // set(formValue, name, value);
       formValue[name] = value;
     }
 

@@ -122,6 +122,7 @@ class Expander extends Component<ExpanderProps, ExpanderState> {
 
 type Props = {
   label?: string,
+  idAttribute?: string,
   addButtonLabel?: string,
   unidentifiedLabel?: string,
   noItemsMessage?: string,
@@ -189,6 +190,7 @@ export default class RepeatingFormField extends Component<Props, State> {
   render() {
     const { items, values } = this.state;
     const {
+      idAttribute = 'id',
       label = 'Item',
       addButtonLabel = 'Add item',
       unidentifiedLabel = 'Unidentified item',
@@ -196,7 +198,8 @@ export default class RepeatingFormField extends Component<Props, State> {
     } = this.props;
 
     const fields = items.map((builder, index) => {
-      const label = (values[index] && values[index].id) || unidentifiedLabel;
+      const label =
+        (values[index] && values[index][idAttribute]) || unidentifiedLabel;
       return (
         <Expander
           key={`exp_${index}`}
@@ -210,10 +213,11 @@ export default class RepeatingFormField extends Component<Props, State> {
       );
     });
 
+    const noItems = <span className="no-items">{noItemsMessage}</span>;
     return (
-      <div>
-        <div>{label}</div>
-        <div>{fields.length > 0 ? fields : noItemsMessage}</div>
+      <div className="repeating-form-field">
+        <div className="label">{label}</div>
+        <div>{fields.length > 0 ? fields : noItems}</div>
         <Button onClick={() => this.addItem()}>{addButtonLabel}</Button>
       </div>
     );

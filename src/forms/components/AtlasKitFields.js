@@ -75,32 +75,35 @@ const renderField: RenderField = (field: FieldDef, onChange: OnChange) => {
       );
 
     case 'select':
-      items = options.map(option => ({
-        heading: option.heading,
-        items: option.items.map(item => {
-          if (typeof item === 'string') {
-            const _item = {
-              content: item,
-              value: item,
-              isSelected: item === value
-            };
-            if (_item.isSelected) {
-              defaultSelected = _item;
+      items = options.map(option => {
+        const { heading, items = [] } = option;
+        return {
+          heading,
+          items: items.map(item => {
+            if (typeof item === 'string') {
+              const _item = {
+                content: item,
+                value: item,
+                isSelected: item === value
+              };
+              if (_item.isSelected) {
+                defaultSelected = _item;
+              }
+              return _item;
+            } else {
+              const _item = {
+                content: item.label || item.value,
+                value: item.value,
+                isSelected: item.value === value
+              };
+              if (_item.isSelected) {
+                defaultSelected = _item;
+              }
+              return _item;
             }
-            return _item;
-          } else {
-            const _item = {
-              content: item.label || item.value,
-              value: item.value,
-              isSelected: item.value === value
-            };
-            if (_item.isSelected) {
-              defaultSelected = _item;
-            }
-            return _item;
-          }
-        })
-      }));
+          })
+        };
+      });
 
       return (
         <div key={id}>
@@ -228,6 +231,7 @@ const renderField: RenderField = (field: FieldDef, onChange: OnChange) => {
       const addButtonLabel: string = misc.addButtonLabel;
       const unidentifiedLabel: string = misc.unidentifiedLabel;
       const noItemsMessage: string = misc.noItemsMessage;
+      const idAttribute: string = misc.idAttribute;
       return (
         <RepeatingFormField
           addButtonLabel={addButtonLabel}
@@ -236,6 +240,7 @@ const renderField: RenderField = (field: FieldDef, onChange: OnChange) => {
           fields={fields}
           unidentifiedLabel={unidentifiedLabel}
           noItemsMessage={noItemsMessage}
+          idAttribute={idAttribute}
         />
       );
 

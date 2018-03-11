@@ -153,6 +153,45 @@ const fieldRules = [
   }
 ];
 
+const options = [
+  {
+    id: 'LABEL',
+    name: 'label',
+    type: 'text',
+    label: 'Label'
+  },
+  {
+    id: 'VALUE',
+    name: 'value',
+    type: 'text',
+    label: 'Value',
+    required: true
+  }
+];
+
+const optionGroups = [
+  {
+    id: 'HEADING',
+    name: 'heading',
+    type: 'text',
+    label: 'Heading',
+    required: false
+  },
+  {
+    id: 'ITEMS',
+    name: 'items',
+    type: 'repeating',
+    label: 'Options',
+    misc: {
+      fields: options,
+      idAttribute: 'label',
+      addButtonLabel: 'Add option',
+      unidentifiedLabel: 'Unidentified option',
+      noItemsMessage: 'No options added'
+    }
+  }
+];
+
 const field = [
   {
     id: 'ID',
@@ -208,6 +247,19 @@ const field = [
     value: '',
     label: 'Initial value',
     placeholder: 'Enter initial value for the field...'
+  },
+  {
+    id: 'OPTIONS',
+    name: 'options',
+    type: 'repeating',
+    value: [],
+    misc: {
+      fields: optionGroups,
+      idAttribute: 'heading',
+      addButtonLabel: 'Add Option Group',
+      noItemsMessage: 'No options have been added!',
+      unidentifiedLabel: 'Unidentified Option Group'
+    }
   },
   {
     id: 'VISIBLE_WHEN',

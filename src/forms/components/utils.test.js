@@ -70,33 +70,73 @@ describe('evaluateRule', () => {
     expect(
       evaluateRule({
         field: 'one',
-        rule: { is: [true] },
+        rule: {
+          is: [true]
+        },
         targetValue: true
       })
     ).toEqual(true);
   });
 
   test("failing 'is' rule", () => {
-    expect(evaluateRule({ field: 'one', is: [false] }, true)).toEqual(false);
+    expect(
+      evaluateRule(
+        {
+          field: 'one',
+          is: [false]
+        },
+        true
+      )
+    ).toEqual(false);
   });
 
   test("successful 'isNot' rule", () => {
-    expect(evaluateRule({ field: 'one', isNot: [true] }, true)).toEqual(false);
+    expect(
+      evaluateRule(
+        {
+          field: 'one',
+          isNot: [true]
+        },
+        true
+      )
+    ).toEqual(false);
   });
 
   test("failing 'isNot' rule", () => {
-    expect(evaluateRule({ field: 'one', isNot: [false] }, true)).toEqual(true);
+    expect(
+      evaluateRule(
+        {
+          field: 'one',
+          isNot: [false]
+        },
+        true
+      )
+    ).toEqual(true);
   });
 
   test("successful combined 'is' and isNot' rule", () => {
     expect(
-      evaluateRule({ field: 'onee', is: [true], isNot: [false] }, true)
+      evaluateRule(
+        {
+          field: 'onee',
+          is: [true],
+          isNot: [false]
+        },
+        true
+      )
     ).toEqual(true);
   });
 
   test("failing combined 'is' and isNot' rule", () => {
     expect(
-      evaluateRule({ field: 'one', is: [true], isNot: [false] }, false)
+      evaluateRule(
+        {
+          field: 'one',
+          is: [true],
+          isNot: [false]
+        },
+        false
+      )
     ).toEqual(false);
   });
 });
@@ -187,32 +227,62 @@ describe('processFields', () => {
   const shouldBeVisible = createField({
     id: 'shouldBeVisible',
     name: 'shouldBeVisible',
-    visibleWhen: [{ field: 'triggerField', is: ['test'] }]
+    visibleWhen: [
+      {
+        field: 'triggerField',
+        is: ['test']
+      }
+    ]
   });
   const shouldBeHidden = createField({
     id: 'shouldBeHidden',
     name: 'shouldBeHidden',
-    visibleWhen: [{ field: 'triggerField', isNot: ['test'] }]
+    visibleWhen: [
+      {
+        field: 'triggerField',
+        isNot: ['test']
+      }
+    ]
   });
   const shouldBeRequired = createField({
     id: 'shouldBeRequired',
     name: 'shouldBeRequired',
-    requiredWhen: [{ field: 'triggerField', is: ['test'] }]
+    requiredWhen: [
+      {
+        field: 'triggerField',
+        is: ['test']
+      }
+    ]
   });
   const shouldBeOptional = createField({
     id: 'shouldBeOptional',
     name: 'shouldBeOptional',
-    requiredWhen: [{ field: 'triggerField', isNot: ['test'] }]
+    requiredWhen: [
+      {
+        field: 'triggerField',
+        isNot: ['test']
+      }
+    ]
   });
   const shouldBeDisabled = createField({
     id: 'shouldBeDisabled',
     name: 'shouldBeDisabled',
-    disabledWhen: [{ field: 'triggerField', is: ['test'] }]
+    disabledWhen: [
+      {
+        field: 'triggerField',
+        is: ['test']
+      }
+    ]
   });
   const shouldBeEnabled = createField({
     id: 'shouldBeEnabled',
     name: 'shouldBeEnabled',
-    disabledWhen: [{ field: 'triggerField', isNot: ['test'] }]
+    disabledWhen: [
+      {
+        field: 'triggerField',
+        isNot: ['test']
+      }
+    ]
   });
 
   const fields = [
@@ -256,19 +326,33 @@ describe('shouldOmitFieldValue', () => {
     type: 'text'
   };
   test('value should be omitted when hidden', () => {
-    const field = { ...baseField, omitWhenHidden: true, visible: false };
+    const field = {
+      ...baseField,
+      omitWhenHidden: true,
+      visible: false
+    };
     expect(shouldOmitFieldValue(field)).toEqual(true);
   });
   test('value should be included when visible', () => {
-    const field = { ...baseField, omitWhenHidden: true, visible: true };
+    const field = {
+      ...baseField,
+      omitWhenHidden: true,
+      visible: true
+    };
     expect(shouldOmitFieldValue(field)).toEqual(false);
   });
   test('value should be ommitted when value matches', () => {
-    const field = { ...baseField, omitWhenValueIs: ['foo'] };
+    const field = {
+      ...baseField,
+      omitWhenValueIs: ['foo']
+    };
     expect(shouldOmitFieldValue(field)).toEqual(true);
   });
   test('value should be included when value does not match', () => {
-    const field = { ...baseField, omitWhenValueIs: ['wrong'] };
+    const field = {
+      ...baseField,
+      omitWhenValueIs: ['wrong']
+    };
     expect(shouldOmitFieldValue(field)).toEqual(false);
   });
 });
@@ -280,10 +364,29 @@ describe('calculateFormValue', () => {
     name: 'test',
     type: 'text'
   };
-  const field1 = { ...baseField, omitWhenHidden: true, visible: false };
-  const field2 = { ...baseField, id: 'TEST2', name: 'test2', value: 'bar' };
-  const field3 = { ...baseField, id: 'TEST3', name: 'test3', value: 'bob' };
-  const field4 = { ...baseField, id: 'TEST4', name: 'test3', value: 'ted' };
+  const field1 = {
+    ...baseField,
+    omitWhenHidden: true,
+    visible: false
+  };
+  const field2 = {
+    ...baseField,
+    id: 'TEST2',
+    name: 'test2',
+    value: 'bar'
+  };
+  const field3 = {
+    ...baseField,
+    id: 'TEST3',
+    name: 'test3',
+    value: 'bob'
+  };
+  const field4 = {
+    ...baseField,
+    id: 'TEST4',
+    name: 'test3',
+    value: 'ted'
+  };
 
   const value = calculateFormValue([field1, field2, field3, field4]);
   test('two field values should be omitted', () => {
@@ -311,12 +414,37 @@ describe('calculateFormValue', () => {
     expect(value.test_added).toEqual('4,5');
     expect(value.test_removed).toEqual('1,3');
   });
+
+  // test("dot-notation values setting", () => {
+  //   const field1 = {
+  //     name: "some.nested.prop",
+  //     ...baseField,
+  //     value: "foo"
+  //   };
+  //   const value = calculateFormValue([field1]);
+  //   expect(value.some.nested.prop).toEqual("foo");
+  // });
 });
 
 describe('updateFieldValue', () => {
-  const field1 = { id: 'A', name: 'a', type: 'text', value: 'baa' };
-  const field2 = { id: 'B', name: 'b', type: 'text', value: 'moo' };
-  const field3 = { id: 'C', name: 'c', type: 'text', value: 'woof' };
+  const field1 = {
+    id: 'A',
+    name: 'a',
+    type: 'text',
+    value: 'baa'
+  };
+  const field2 = {
+    id: 'B',
+    name: 'b',
+    type: 'text',
+    value: 'moo'
+  };
+  const field3 = {
+    id: 'C',
+    name: 'c',
+    type: 'text',
+    value: 'woof'
+  };
 
   const fields = updateFieldValue('B', 'oink', [field1, field2, field3]);
   const fieldsById = mapFieldsById(fields);
