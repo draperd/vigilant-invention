@@ -6,7 +6,8 @@ const form1: FieldDef[] = [
     id: 'NAME',
     name: 'name',
     label: 'Name?',
-    value: 'bob',
+    placeholder: 'Your name...',
+    value: '',
     type: 'text',
     required: true,
     validWhen: {
@@ -17,7 +18,7 @@ const form1: FieldDef[] = [
     }
   },
   {
-    id: 'NAME2',
+    id: 'ADDRESS',
     name: 'address',
     label: 'Address',
     type: 'textarea',
@@ -33,42 +34,57 @@ const form1: FieldDef[] = [
     disabledWhen: [
       {
         field: 'NAME',
-        is: ['lock']
+        is: ['']
       }
     ]
   },
   {
-    id: 'AGE',
-    name: 'age',
-    label: 'Age?',
-    value: 18,
+    id: 'SUBSCRIBE',
+    name: 'subscribe',
+    label: 'Would you like to receive regular updates?',
+    value: false,
+    type: 'checkbox'
+  },
+  {
+    id: 'EMAIL',
+    name: 'email',
+    label: "What's your e-mail address?",
+    value: '',
     type: 'text',
     visibleWhen: [
       {
-        field: 'SHOW',
+        field: 'SUBSCRIBE',
         isNot: [false]
       }
     ]
   },
   {
-    id: 'SHOW',
-    name: 'show',
-    label: 'Show Age Field',
-    value: true,
-    type: 'checkbox'
-  },
-  {
-    id: 'PICK',
-    name: 'picker',
-    label: 'Choose one',
-    placeholder: 'Pick an item',
+    id: 'REASON',
+    name: 'reason',
+    label: 'How did you hear about us?',
+    placeholder: 'Where?',
     value: 'b',
-    type: 'select',
+    type: 'radiogroup',
     options: [
       {
-        items: ['a', 'b', 'c']
+        items: ['Advert', 'Friend', 'Other']
       }
-    ]
+    ],
+    omitWhenValueIs: ['Other']
+  },
+  {
+    id: 'OTHER_REASON',
+    name: 'reason',
+    label: 'What was the reason?',
+    type: 'textarea',
+    value: '',
+    visibleWhen: [
+      {
+        field: 'REASON',
+        is: ['Other']
+      }
+    ],
+    omitWhenHidden: true
   },
   {
     id: 'PICKAGAIN',
@@ -76,7 +92,7 @@ const form1: FieldDef[] = [
     label: 'Choose a colour',
     placeholder: 'Pick a colour',
     value: 'G',
-    type: 'radiogroup',
+    type: 'select',
     options: [
       {
         items: [
