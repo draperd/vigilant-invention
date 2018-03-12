@@ -1,6 +1,8 @@
 // @flow
 import React, { Component } from 'react';
+// import isEqual from "lodash/isEqual";
 import Form from './Form';
+// import Button from "@atlaskit/button";
 import renderField from './AtlasKitFields';
 import type { FieldDef, FormValue } from './types';
 import { formBuilder } from '../../definitions';
@@ -9,7 +11,9 @@ type Props = {};
 
 type State = {
   previewFields: FieldDef[],
-  builderFields: Array<any>
+  builderFields: Array<any>,
+  previewFormValue: any,
+  previewFormButtonDisabled: boolean
 };
 
 export default class FormBuilder extends Component<Props, State> {
@@ -17,7 +21,9 @@ export default class FormBuilder extends Component<Props, State> {
     super(props);
     this.state = {
       previewFields: [],
-      builderFields: []
+      builderFields: [],
+      previewFormValue: {},
+      previewFormButtonDisabled: false
     };
   }
 
@@ -33,7 +39,11 @@ export default class FormBuilder extends Component<Props, State> {
     return;
   }
   render() {
-    const { previewFields } = this.state;
+    const {
+      previewFields
+      // previewFormValue,
+      // previewFormButtonDisabled
+    } = this.state;
     return (
       <div className="App">
         <section>
@@ -48,7 +58,29 @@ export default class FormBuilder extends Component<Props, State> {
         </section>
         <section>
           <div>Preview</div>
-          <Form fields={previewFields.slice()} renderField={renderField} />
+          <Form
+            fields={previewFields.slice()}
+            renderField={renderField}
+            // onChange={(value, isValid) => {
+            //   if (!isEqual(value, previewFormValue)) {
+            //     console.log("Form changed", value, isValid);
+            //     this.setState({
+            //       // previewFormValue,
+            //       previewFormButtonDisabled: !isValid
+            //     });
+            //   }
+            // }}
+          />
+          {/* <div>
+            <Button
+              disabled={previewFormButtonDisabled}
+              onClick={() => {
+                console.log("Preview Form Value", previewFormValue);
+              }}
+            >
+              OK
+            </Button>
+          </div> */}
         </section>
       </div>
     );

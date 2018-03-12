@@ -234,6 +234,7 @@ const renderField: RenderField = (field: FieldDef, onChange: OnChange) => {
       const idAttribute: string = misc.idAttribute;
       return (
         <RepeatingFormField
+          key={id}
           addButtonLabel={addButtonLabel}
           label={label}
           onChange={value => onChange(id, value)}
