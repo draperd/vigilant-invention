@@ -50,16 +50,24 @@ const evaluateRule: EvaluateRule = (rule = {}, targetValue) => {
   let hasInvalidValue = !!rule.isNot && rule.isNot.length > 0;
 
   if (hasInvalidValue) {
-    hasInvalidValue = isNot.some(invalidValue =>
-      valuesMatch(invalidValue, targetValue)
-    );
+    hasInvalidValue = isNot.some(invalidValue => {
+      if (invalidValue.hasOwnProperty('value')) {
+        return valuesMatch(invalidValue.value, targetValue);
+      } else {
+        return valuesMatch(invalidValue, targetValue);
+      }
+    });
   }
 
   if (!hasInvalidValue && !hasValidValue) {
     if (rule.is && rule.is.length) {
-      hasValidValue = rule.is.some(validValue =>
-        valuesMatch(validValue, targetValue)
-      );
+      hasValidValue = rule.is.some(validValue => {
+        if (validValue.hasOwnProperty('value')) {
+          return valuesMatch(validValue.value, targetValue);
+        } else {
+          return valuesMatch(validValue, targetValue);
+        }
+      });
     }
   }
   return hasValidValue && !hasInvalidValue;

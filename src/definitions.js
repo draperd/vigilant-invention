@@ -114,7 +114,7 @@ const form1: FieldDef[] = [
 const simpleValue = [
   {
     id: 'VALUE',
-    name: 'id',
+    name: 'value',
     type: 'text',
     label: 'Value',
     placeholder: 'Value...',
@@ -144,6 +144,19 @@ const fieldRules = [
     name: 'is',
     type: 'repeating',
     label: 'Is one of the following values...',
+    misc: {
+      fields: simpleValue,
+      idAttribute: 'value',
+      addButtonLabel: 'Add value',
+      unidentifiedLabel: 'No Value',
+      noItemsMessage: 'No values added'
+    }
+  },
+  {
+    id: 'ISNOT',
+    name: 'isNot',
+    type: 'repeating',
+    label: 'Is NOT one of the following values...',
     misc: {
       fields: simpleValue,
       addButtonLabel: 'Add value',

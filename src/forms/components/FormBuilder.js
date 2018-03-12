@@ -22,13 +22,14 @@ export default class FormBuilder extends Component<Props, State> {
   }
 
   onBuilderFormChange(value: FormValue, isValid: boolean) {
+    // console.log("Current form value", value.fields);
     this.setState({
       previewFields: value.fields
     });
   }
 
   fetchOptions(id: string) {
-    console.log('Fetching options for ', id);
+    // console.log('Fetching options for ', id);
     return;
   }
   render() {

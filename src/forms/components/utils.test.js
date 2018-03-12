@@ -97,9 +97,9 @@ describe('evaluateRule', () => {
           field: 'one',
           isNot: [true]
         },
-        true
+        false
       )
-    ).toEqual(false);
+    ).toEqual(true);
   });
 
   test("failing 'isNot' rule", () => {
@@ -109,9 +109,9 @@ describe('evaluateRule', () => {
           field: 'one',
           isNot: [false]
         },
-        true
+        false
       )
-    ).toEqual(true);
+    ).toEqual(false);
   });
 
   test("successful combined 'is' and isNot' rule", () => {
@@ -138,6 +138,20 @@ describe('evaluateRule', () => {
         false
       )
     ).toEqual(false);
+  });
+
+  // NOTE: This is one option for allowing form builder to construct rules, but is harder to implement
+  test('works with complex objects', () => {
+    expect(
+      evaluateRule(
+        {
+          field: 'one',
+          is: [{ value: 'bob' }],
+          isNot: [{ value: 'ted' }]
+        },
+        'bob'
+      )
+    ).toEqual(true);
   });
 });
 
