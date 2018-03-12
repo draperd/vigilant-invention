@@ -50,7 +50,7 @@ class App extends Component {
               </Button>
             </div>
           </section>
-          {/* <section>
+          <section>
             <Form
               fields={form1}
               value={nativeFormValue}
@@ -67,7 +67,7 @@ class App extends Component {
                 disabled={nativeButtonIsDisabled}
                 onClick={() => {
                   console.log(
-                    "Native form value is",
+                    'Native form value is',
                     this.state.nativeFormValue
                   );
                 }}
@@ -75,7 +75,7 @@ class App extends Component {
                 OK
               </button>
             </div>
-          </section> */}
+          </section>
         </div>
         <div>
           <FormBuilder />

@@ -12,7 +12,7 @@ const form1: FieldDef[] = [
     required: true,
     validWhen: {
       lengthIsGreaterThan: {
-        length: 4,
+        length: 3,
         message: 'Name is too short!'
       }
     }
@@ -24,13 +24,7 @@ const form1: FieldDef[] = [
     type: 'textarea',
     placeholder: 'Enter address...',
     value: '',
-    required: true,
-    visibleWhen: [
-      {
-        field: 'NAME',
-        isNot: ['hide']
-      }
-    ],
+    required: false,
     disabledWhen: [
       {
         field: 'NAME',
@@ -92,7 +86,7 @@ const form1: FieldDef[] = [
     label: 'Choose a colour',
     placeholder: 'Pick a colour',
     value: 'G',
-    type: 'select',
+    type: 'multiselect',
     options: [
       {
         items: [
