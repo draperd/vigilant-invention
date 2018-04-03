@@ -1,6 +1,21 @@
 // @flow
+import type { Node } from 'react';
 
 export type Value = any;
+
+export type FormContextData = {
+  fields: FieldDef[],
+  value: FormValue,
+  isValid: boolean,
+  options: { [string]: Options },
+  registerField: any,
+  onFieldChange: OnChange
+};
+
+export type Field = FieldDef & {
+  onFieldChange: OnChange,
+  registerField: FieldDef => void
+};
 
 export type Rule = {
   field: string,
@@ -71,7 +86,8 @@ export type FormProps = {
   value?: FormValue,
   onChange?: OnFormChange,
   renderField?: RenderField,
-  optionsHandler?: OptionsHandler
+  optionsHandler?: OptionsHandler,
+  children?: Node[]
 };
 
 export type FormState = {
@@ -111,6 +127,7 @@ export type MapFieldsById = (FieldDef[]) => FieldsById;
 
 export type OnChange = (id: string, value: any) => void;
 
+export type RegisterField = (FieldDef, FieldDef[], FormValue) => FieldDef[];
 export type RegisterFields = (FieldDef[], FormValue) => FieldDef[];
 
 export type UpdateFieldValue = (string, Value, FieldDef[]) => FieldDef[];

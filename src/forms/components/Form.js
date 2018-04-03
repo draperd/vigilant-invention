@@ -1,56 +1,31 @@
 // @flow
 import React, { Component } from 'react';
+import DefaultField from './DefaultField';
 import {
   calculateFormValue,
   processFields,
   processOptions,
+  registerField,
   registerFields,
   updateFieldValue,
   validateAllFields
 } from './utils';
 import type {
   FieldDef,
+  FormContextData,
   FormProps,
   FormState,
   OnChange,
   OptionsHandler,
+  Options,
   Value
 } from './types';
 
-type SampleFieldProps = {
-  field: FieldDef,
-  onChange: OnChange
-};
-
-class SampleField extends Component<SampleFieldProps, void> {
-  render() {
-    const { field, onChange } = this.props;
-    const { name, id, value, type, placeholder, disabled, required } = field;
-    const checked = type === 'checkbox' ? value : undefined;
-    return (
-      <div>
-        <input
-          type={type}
-          id={id}
-          name={name}
-          value={value}
-          placeholder={placeholder}
-          disabled={disabled}
-          required={required}
-          checked={checked}
-          onChange={evt =>
-            onChange(
-              id,
-              type === 'checkbox' ? evt.target.checked : evt.target.value
-            )
-          }
-        />
-      </div>
-    );
-  }
-}
+export const FormContext = React.createContext();
 
 export default class Form extends Component<FormProps, FormState> {
+  // This function needs to be static because it is called from getDerivedStateFromProps which is also static, but it is
+  // also called from onFieldChanged which is not static
   static getNextStateFromFields(
     fields: FieldDef[],
     optionsHandler?: OptionsHandler
@@ -81,7 +56,10 @@ export default class Form extends Component<FormProps, FormState> {
   }
 
   static getDerivedStateFromProps(nextProps: FormProps, prevState: FormState) {
-    if (nextProps.defaultFields !== prevState.defaultFields) {
+    if (
+      nextProps.defaultFields &&
+      nextProps.defaultFields !== prevState.defaultFields
+    ) {
       let { defaultFields, value: valueFromProps } = nextProps;
       const { value: valueFromState } = prevState;
       const fields = registerFields(
@@ -118,13 +96,22 @@ export default class Form extends Component<FormProps, FormState> {
     });
   }
 
+  // Register field is provided in the context to allow children to register with this form...
+  registerField(field: FieldDef) {
+    let { fields = [], value = {} } = this.state;
+    fields = registerField(field, fields, value);
+    this.setState({
+      fields
+    });
+  }
+
   renderField(field: FieldDef, onChange: OnChange) {
     const { visible } = field;
     if (!visible) {
       return null;
     }
     return (
-      <SampleField
+      <DefaultField
         key={field.id}
         field={field}
         onChange={this.onFieldChange.bind(this)}
@@ -133,18 +120,39 @@ export default class Form extends Component<FormProps, FormState> {
   }
 
   render() {
-    const { fields } = this.state;
-    const { renderField = this.renderField } = this.props;
+    const { fields, value, isValid } = this.state;
+    const {
+      children,
+      defaultFields,
+      renderField = this.renderField
+    } = this.props;
     const onFieldChange = this.onFieldChange.bind(this);
 
-    const renderedFields = fields.map(field => {
-      const { visible } = field;
-      if (visible) {
-        return renderField(field, onFieldChange);
-      }
-      return null;
-    });
+    const context: FormContextData = {
+      fields,
+      isValid,
+      value,
+      registerField: this.registerField.bind(this),
+      options: {},
+      onFieldChange
+    };
+    if (defaultFields) {
+      const renderedFields = fields.map(field => {
+        const { visible } = field;
+        if (visible) {
+          return renderField(field, onFieldChange);
+        }
+        return null;
+      });
 
-    return renderedFields;
+      return (
+        <FormContext.Provider value={context}>
+          {renderedFields}
+        </FormContext.Provider>
+      );
+    }
+    return (
+      <FormContext.Provider value={context}>{children}</FormContext.Provider>
+    );
   }
 }

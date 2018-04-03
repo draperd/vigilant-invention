@@ -1,11 +1,12 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import Button from '@atlaskit/button';
 import './App.css';
 
-import Form from './forms/components/Form';
+import Form, { FormContext } from './forms/components/Form';
 import renderAkField from './forms/components/AtlasKitFields';
 import renderNativeField from './forms/components/NativeFields';
 import FormBuilder from './forms/components/FormBuilder';
+import FieldText from './forms/components/Atlaskit/FieldText';
 
 import { form1 } from './definitions';
 
@@ -51,7 +52,7 @@ class App extends Component {
             </div>
           </section>
           <section>
-            <Form
+            {/* <Form
               defaultFields={form1}
               value={nativeFormValue}
               onChange={(nativeFormValue, isValid) => {
@@ -74,7 +75,17 @@ class App extends Component {
               >
                 OK
               </button>
-            </div>
+            </div> */}
+            <Form>
+              <FieldText
+                id="NAME"
+                name="name"
+                placeholder="Who are you?"
+                value=""
+                label="Name"
+                required={true}
+              />
+            </Form>
           </section>
         </div>
         <div>

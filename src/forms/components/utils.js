@@ -14,6 +14,7 @@ import type {
   OnChange,
   ProcessFields,
   ProcessOptions,
+  RegisterField,
   RegisterFields,
   SplitDelimitedValue,
   UpdateFieldValue,
@@ -211,6 +212,20 @@ const createField: CreateFieldDef = field => {
   };
 };
 
+// Because this function can be passed with the state of a component form
+// it is not mutating the supplied fields array but returning a new instance
+// each time, this is less efficient (when passing entire fieldDef arrays to the
+// form) but safer when children of forms are registering themselves
+const registerField: RegisterField = (field, fields, formValue) => {
+  if (fieldDefIsValid(field, fields)) {
+    const { name, value, valueDelimiter } = field;
+    field.defaultValue = formValue[name] || value;
+    field.value = splitDelimitedValue(value, valueDelimiter);
+    return fields.concat(field);
+  }
+  return fields.slice();
+};
+
 const registerFields: RegisterFields = (fieldsToValidate, formValue) => {
   const fields = [];
   fieldsToValidate.forEach(field => {
@@ -329,6 +344,7 @@ export {
   mapFieldDefToComponent,
   processFields,
   processOptions,
+  registerField,
   registerFields,
   shouldOmitFieldValue,
   splitDelimitedValue,
