@@ -64,20 +64,21 @@ export type FormValue = {
 
 export type OnFormChange = (FormValue, boolean) => void;
 
-export type OptionsHander = string => Options | void;
+export type OptionsHandler = string => Options | void;
 
 export type FormProps = {
-  fields: FieldDef[],
+  defaultFields: FieldDef[],
   value?: FormValue,
   onChange?: OnFormChange,
   renderField?: RenderField,
-  optionsHandler?: OptionsHander
+  optionsHandler?: OptionsHandler
 };
 
 export type FormState = {
   fields: FieldDef[],
   value: FormValue,
-  isValid: boolean
+  isValid: boolean,
+  defaultFields: []
 };
 
 export type EvaluateRule = (rule?: Rule, targetValue: Value) => boolean;
@@ -93,7 +94,7 @@ export type EvaluateAllRules = (
 ) => boolean;
 
 export type ProcessFields = (FieldDef[]) => FieldDef[];
-export type ProcessOptions = (FieldDef[], OptionsHander) => FieldDef[];
+export type ProcessOptions = (FieldDef[], OptionsHandler) => FieldDef[];
 
 export type ValidationResult = {
   isValid: boolean,

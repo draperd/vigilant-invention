@@ -31,7 +31,7 @@ class App extends Component {
         <div className="App">
           <section>
             <Form
-              fields={form1}
+              defaultFields={form1}
               value={akFormValue}
               onChange={(akFormValue, isValid) => {
                 this.setState({ akFormValue, akButtonDisabled: !isValid });
@@ -52,7 +52,7 @@ class App extends Component {
           </section>
           <section>
             <Form
-              fields={form1}
+              defaultFields={form1}
               value={nativeFormValue}
               onChange={(nativeFormValue, isValid) => {
                 this.setState({

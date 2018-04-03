@@ -151,7 +151,7 @@ export default class RepeatingFormField extends Component<Props, State> {
     items[targetIndex] = (
       <Form
         key={`FIELD_${targetIndex}`}
-        fields={fields}
+        defaultFields={fields}
         renderField={renderField}
         onChange={(value, isValid) => {
           const { values } = this.state;
