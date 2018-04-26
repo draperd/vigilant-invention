@@ -23,7 +23,13 @@ const createTeamForm: FieldDef[] = [
     type: 'text',
     name: 'name',
     label: 'Team name',
-    required: true
+    required: true,
+    validWhen: {
+      lengthIsLessThan: {
+        length: 256,
+        message: 'Team names can be a maximum of 255 characters in length'
+      }
+    }
   },
   {
     id: 'ISSUE_SOURCE',

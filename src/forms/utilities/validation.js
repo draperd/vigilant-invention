@@ -1,14 +1,49 @@
 // @flow
-import type { ValidateField, ValidateAllFields } from '../components/types';
+import type {
+  Value,
+  ValidateField,
+  ValidateAllFields
+} from '../components/types';
+
+export type LengthIsGreaterThan = ({
+  value: Value,
+  length: number,
+  message: string
+}) => void | string;
+
+export type LengthIsLessThan = ({
+  value: Value,
+  length: number,
+  message: string
+}) => void | string;
+
+export const lengthIsGreaterThan: LengthIsGreaterThan = ({
+  value,
+  length,
+  message
+}) => {
+  if (isNaN(length) || (value || '').length > length) {
+    return;
+  } else {
+    return message || `Should have more than ${length} characters`;
+  }
+};
+
+export const lengthIsLessThan: LengthIsLessThan = ({
+  value,
+  length,
+  message
+}) => {
+  if (isNaN(length) || (value || '').length < length) {
+    return;
+  } else {
+    return message || `Should have more than ${length} characters`;
+  }
+};
 
 export const validators = {
-  lengthIsGreaterThan: function({ value, length, message }) {
-    if (isNaN(length) || (value || '').length > length) {
-      return;
-    } else {
-      return message || `Should have more than ${length} characters`;
-    }
-  }
+  lengthIsGreaterThan,
+  lengthIsLessThan
 };
 
 export const validateField: ValidateField = field => {

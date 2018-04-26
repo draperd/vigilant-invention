@@ -1,5 +1,9 @@
 // @flow
-import { validateField } from './validation';
+import {
+  validateField,
+  lengthIsGreaterThan,
+  lengthIsLessThan
+} from './validation';
 import { createField } from '../components/utils.js';
 import type { ValidateField, ValidateAllFields } from '../components/types';
 
@@ -77,5 +81,49 @@ describe('validateField', () => {
       value: [1]
     };
     expect(validateField(testField).isValid).toBe(true);
+  });
+});
+
+describe('lengthIsGreaterThan validator', () => {
+  test('with valid value', () => {
+    expect(
+      lengthIsGreaterThan({
+        value: 'test',
+        length: 3,
+        message: 'Fail'
+      })
+    ).toBeUndefined();
+  });
+
+  test('with invvalid value', () => {
+    expect(
+      lengthIsGreaterThan({
+        value: 'te',
+        length: 3,
+        message: 'Fail'
+      })
+    ).toBe('Fail');
+  });
+});
+
+describe('lengthIsLessThan validator', () => {
+  test('with valid value', () => {
+    expect(
+      lengthIsLessThan({
+        value: 'te',
+        length: 3,
+        message: 'Fail'
+      })
+    ).toBeUndefined();
+  });
+
+  test('with invvalid value', () => {
+    expect(
+      lengthIsLessThan({
+        value: 'test',
+        length: 3,
+        message: 'Fail'
+      })
+    ).toBe('Fail');
   });
 });

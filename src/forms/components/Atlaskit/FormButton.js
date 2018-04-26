@@ -2,10 +2,13 @@
 import React from 'react';
 import Button from '@atlaskit/button';
 import { FormContext } from '../Form';
+import type { FormValue } from '../types';
 
 export type FormButtonProps = {
   label: string,
-  onClick: (value: FormValue) => void
+  onClick: (value: FormValue) => void,
+  value: FormValue,
+  isValid: boolean
 };
 
 class FormButton extends React.Component<FormButtonProps> {
@@ -17,7 +20,7 @@ class FormButton extends React.Component<FormButtonProps> {
         isDisabled={!isValid}
         onClick={() => onClick(value)}
       >
-        {label}
+        {label}{' '}
       </Button>
     );
   }

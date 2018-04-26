@@ -11,10 +11,12 @@ export type Rule = {
 
 export type OnFieldChange = (id: string, value: any) => void;
 
-export type Validator = string;
+export type ValidatorId = string;
+
+export type ValidationConfig = any;
 
 export type ValidationRules = {
-  [Validator]: any
+  [ValidatorId]: ValidationConfig
 };
 
 export type Option =
@@ -41,7 +43,7 @@ export type FieldDef = {
   placeholder?: string,
   type: string,
   defaultValue?: void | string | number | boolean | Array<any>,
-  value: void | string | number | boolean | Array<any>,
+  value?: void | string | number | boolean | Array<any>,
   visible?: boolean,
   required?: boolean,
   disabled?: boolean,
