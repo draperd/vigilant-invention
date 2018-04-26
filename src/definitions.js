@@ -1,6 +1,111 @@
 // @flow
 import type { FieldDef } from './forms/components/types';
 
+const createTeamForm: FieldDef[] = [
+  {
+    id: 'PLAN_TYPE',
+    type: 'radiogroup',
+    label: 'Plan type',
+    name: 'planType',
+    value: 'POINTS',
+    options: [
+      {
+        items: [
+          { label: 'Points', value: 'POINTS' },
+          { label: 'Hours', value: 'HOURS' },
+          { label: 'Days', value: 'DAYS' }
+        ]
+      }
+    ]
+  },
+  {
+    id: 'TEAMNAME',
+    type: 'text',
+    name: 'name',
+    label: 'Team name',
+    required: true
+  },
+  {
+    id: 'ISSUE_SOURCE',
+    type: 'select',
+    name: 'issueSource',
+    label: 'Associated issue source'
+  },
+  {
+    id: 'TEAM_TYPE',
+    type: 'select',
+    name: 'type',
+    label: 'Team type',
+    value: 'SCRUM',
+    required: true,
+    options: [
+      {
+        items: [
+          { label: 'Scrum', value: 'SCRUM' },
+          { label: 'Kanban', value: 'KANBAN' }
+        ]
+      }
+    ]
+  },
+  {
+    id: 'VELOCITY_POINTS',
+    type: 'text',
+    name: 'velocity',
+    label: 'Velocity (pts)',
+    visibleWhen: [
+      {
+        field: 'PLAN_TYPE',
+        is: ['POINTS']
+      }
+    ],
+    omitWhenValueIs: ['HOURS', 'DAYS']
+  },
+  {
+    id: 'VELOCITY_HOURS',
+    type: 'text',
+    name: 'velocity',
+    label: 'Velocity (hours)',
+    visibleWhen: [
+      {
+        field: 'PLAN_TYPE',
+        is: ['HOURS']
+      }
+    ],
+    omitWhenValueIs: ['POINTS', 'DAYS']
+  },
+  {
+    id: 'VELOCITY_DAYS',
+    type: 'text',
+    name: 'velocity',
+    label: 'Velocity (days)',
+    visibleWhen: [
+      {
+        field: 'PLAN_TYPE',
+        is: ['DAYS']
+      }
+    ],
+    omitWhenValueIs: ['POINTS', 'HOURS']
+  },
+  {
+    id: 'ITERATION_LENGTH',
+    type: 'text',
+    name: 'iterationLength',
+    label: 'Iteration length (weeks)',
+    visibleWhen: [
+      {
+        field: 'TEAM_TYPE',
+        is: ['SCRUM']
+      }
+    ]
+  },
+  {
+    id: 'MEMBERS',
+    type: 'multiselect',
+    name: 'members',
+    label: 'Members'
+  }
+];
+
 const form1: FieldDef[] = [
   {
     id: 'NAME',
@@ -314,4 +419,4 @@ const formBuilder = [
   }
 ];
 
-export { form1, formBuilder, field };
+export { createTeamForm, form1, formBuilder, field };

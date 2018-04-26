@@ -9,7 +9,7 @@ import FormBuilder from './forms/components/FormBuilder';
 import FieldText from './forms/components/Atlaskit/FieldText';
 import FormButton from './forms/components/Atlaskit/FormButton';
 
-import { form1 } from './definitions';
+import { createTeamForm, form1 } from './definitions';
 
 class App extends Component {
   constructor(props) {
@@ -33,7 +33,7 @@ class App extends Component {
         <div className="App">
           <section>
             <Form
-              defaultFields={form1}
+              defaultFields={createTeamForm}
               value={akFormValue}
               onChange={(akFormValue, isValid) => {
                 this.setState({ akFormValue, akButtonDisabled: !isValid });

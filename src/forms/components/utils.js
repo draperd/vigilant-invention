@@ -11,7 +11,6 @@ import type {
   JoinDelimitedValue,
   MapFieldsById,
   OmitFieldValue,
-  OnFieldChange,
   OptionsHandler,
   ProcessFields,
   ProcessOptions,
@@ -48,13 +47,6 @@ const getNextStateFromFields = (
 // We are assuming that typing takes care that all required attributes are present
 const fieldDefIsValid = (field: FieldDef, fields: FieldDef[]) => {
   return !fields.some(currentField => currentField.id === field.id);
-};
-
-const mapFieldDefToComponent = (field: FieldDef, onChange: OnFieldChange) => {
-  // The component onchange needs to be bound to the form onchange handler so that the form can process the value change
-  // to manage the state of the form
-
-  return null;
 };
 
 const valuesMatch = (a: Value, b: Value) => {
@@ -362,7 +354,6 @@ export {
   getNextStateFromFields,
   joinDelimitedValue,
   mapFieldsById,
-  mapFieldDefToComponent,
   processFields,
   processOptions,
   registerField,
