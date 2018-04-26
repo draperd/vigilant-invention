@@ -7,6 +7,7 @@ import renderAkField from './forms/components/AtlasKitFields';
 import renderNativeField from './forms/components/NativeFields';
 import FormBuilder from './forms/components/FormBuilder';
 import FieldText from './forms/components/Atlaskit/FieldText';
+import FormButton from './forms/components/Atlaskit/FormButton';
 
 import { form1 } from './definitions';
 
@@ -84,6 +85,12 @@ class App extends Component {
                 value=""
                 label="Name"
                 required={true}
+              />
+              <FormButton
+                label="Save"
+                onClick={(value: FormValue) =>
+                  console.log('Inline button value', value)
+                }
               />
             </Form>
           </section>
