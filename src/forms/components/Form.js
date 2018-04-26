@@ -2,49 +2,23 @@
 import React, { Component } from 'react';
 import DefaultField from './DefaultField';
 import {
-  calculateFormValue,
-  processFields,
-  processOptions,
+  getNextStateFromFields,
   registerField,
   registerFields,
-  updateFieldValue,
-  validateAllFields
+  updateFieldValue
 } from './utils';
 import type {
   FieldDef,
   FormContextData,
   FormProps,
   FormState,
-  OnChange,
-  OptionsHandler,
-  Options,
+  OnFieldChange,
   Value
 } from './types';
 
 export const FormContext = React.createContext();
 
 export default class Form extends Component<FormProps, FormState> {
-  // This function needs to be static because it is called from getDerivedStateFromProps which is also static, but it is
-  // also called from onFieldChanged which is not static
-  static getNextStateFromFields(
-    fields: FieldDef[],
-    optionsHandler?: OptionsHandler
-  ) {
-    fields = processFields(fields);
-    if (optionsHandler) {
-      fields = processOptions(fields, optionsHandler);
-    }
-    fields = validateAllFields(fields);
-    const value = calculateFormValue(fields);
-    const isValid = fields.every(field => field.isValid);
-    const nextState = {
-      fields,
-      value,
-      isValid
-    };
-    return nextState;
-  }
-
   constructor(props: FormProps) {
     super(props);
     this.state = {
@@ -68,7 +42,7 @@ export default class Form extends Component<FormProps, FormState> {
       );
 
       const { optionsHandler } = nextProps;
-      const nextState = Form.getNextStateFromFields(fields, optionsHandler);
+      const nextState = getNextStateFromFields(fields, optionsHandler);
 
       return {
         ...nextState,
@@ -82,10 +56,7 @@ export default class Form extends Component<FormProps, FormState> {
   onFieldChange(id: string, value: Value) {
     let { fields } = this.state;
     fields = updateFieldValue(id, value, fields);
-    const nextState = Form.getNextStateFromFields(
-      fields,
-      this.props.optionsHandler
-    );
+    const nextState = getNextStateFromFields(fields, this.props.optionsHandler);
 
     this.setState(nextState, () => {
       const { onChange } = this.props;
@@ -105,7 +76,25 @@ export default class Form extends Component<FormProps, FormState> {
     });
   }
 
-  renderField(field: FieldDef, onChange: OnChange) {
+  createFormContext() {
+    const { fields, value, isValid } = this.state;
+    const { renderField = this.renderField } = this.props;
+    const onFieldChange = this.onFieldChange.bind(this);
+
+    const context: FormContextData = {
+      fields,
+      isValid,
+      value,
+      registerField: this.registerField.bind(this),
+      renderField,
+      options: {},
+      onFieldChange
+    };
+
+    return context;
+  }
+
+  renderField(field: FieldDef, onChange: OnFieldChange) {
     const { visible } = field;
     if (!visible) {
       return null;
@@ -119,37 +108,28 @@ export default class Form extends Component<FormProps, FormState> {
     );
   }
 
+  renderFields(context: FormContextData) {
+    const { fields, onFieldChange, renderField } = context;
+    const renderedFields = fields.map(field => {
+      const { visible } = field;
+      if (visible) {
+        return renderField(field, onFieldChange);
+      }
+      return null;
+    });
+
+    return (
+      <FormContext.Provider value={context}>
+        {renderedFields}
+      </FormContext.Provider>
+    );
+  }
+
   render() {
-    const { fields, value, isValid } = this.state;
-    const {
-      children,
-      defaultFields,
-      renderField = this.renderField
-    } = this.props;
-    const onFieldChange = this.onFieldChange.bind(this);
-
-    const context: FormContextData = {
-      fields,
-      isValid,
-      value,
-      registerField: this.registerField.bind(this),
-      options: {},
-      onFieldChange
-    };
+    const { children, defaultFields } = this.props;
+    const context = this.createFormContext();
     if (defaultFields) {
-      const renderedFields = fields.map(field => {
-        const { visible } = field;
-        if (visible) {
-          return renderField(field, onFieldChange);
-        }
-        return null;
-      });
-
-      return (
-        <FormContext.Provider value={context}>
-          {renderedFields}
-        </FormContext.Provider>
-      );
+      return this.renderFields(context);
     }
     return (
       <FormContext.Provider value={context}>{children}</FormContext.Provider>

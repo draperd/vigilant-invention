@@ -7,9 +7,9 @@ import RadioGroup from '@atlaskit/field-radio-group';
 import SingleSelect from '@atlaskit/single-select';
 import MultiSelect from '@atlaskit/multi-select';
 import RepeatingFormField from './RepeatingFormField';
-import type { RenderField, FieldDef, OnChange } from './types';
+import type { RenderField, FieldDef, OnFieldChange } from './types';
 
-const renderField: RenderField = (field: FieldDef, onChange: OnChange) => {
+const renderField: RenderField = (field: FieldDef, onChange: OnFieldChange) => {
   const {
     disabled,
     errorMessages,

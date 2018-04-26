@@ -11,7 +11,8 @@ import type {
   JoinDelimitedValue,
   MapFieldsById,
   OmitFieldValue,
-  OnChange,
+  OnFieldChange,
+  OptionsHandler,
   ProcessFields,
   ProcessOptions,
   RegisterField,
@@ -23,6 +24,25 @@ import type {
   ValidateAllFields
 } from './types';
 
+const getNextStateFromFields = (
+  fields: FieldDef[],
+  optionsHandler?: OptionsHandler
+) => {
+  fields = processFields(fields);
+  if (optionsHandler) {
+    fields = processOptions(fields, optionsHandler);
+  }
+  fields = validateAllFields(fields);
+  const value = calculateFormValue(fields);
+  const isValid = fields.every(field => field.isValid);
+  const nextState = {
+    fields,
+    value,
+    isValid
+  };
+  return nextState;
+};
+
 // A field definition is valid if a field with the same id does not already exist in
 // the supplied form state.
 // We are assuming that typing takes care that all required attributes are present
@@ -30,7 +50,7 @@ const fieldDefIsValid = (field: FieldDef, fields: FieldDef[]) => {
   return !fields.some(currentField => currentField.id === field.id);
 };
 
-const mapFieldDefToComponent = (field: FieldDef, onChange: OnChange) => {
+const mapFieldDefToComponent = (field: FieldDef, onChange: OnFieldChange) => {
   // The component onchange needs to be bound to the form onchange handler so that the form can process the value change
   // to manage the state of the form
 
@@ -339,6 +359,7 @@ export {
   evaluateAllRules,
   fieldDefIsValid,
   getMissingItems,
+  getNextStateFromFields,
   joinDelimitedValue,
   mapFieldsById,
   mapFieldDefToComponent,

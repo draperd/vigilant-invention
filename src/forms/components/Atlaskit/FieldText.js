@@ -2,7 +2,7 @@
 import React from 'react';
 import FieldText from '@atlaskit/field-text';
 import { FormContext } from '../Form';
-import type { FormContextData, Field } from '../types';
+import type { Field } from '../types';
 
 class AtlaskitFieldText extends React.Component<Field> {
   constructor(props: Field) {
@@ -17,13 +17,10 @@ class AtlaskitFieldText extends React.Component<Field> {
       id,
       isValid,
       name,
-      options = [],
       placeholder,
       required,
-      type,
       value,
       label,
-      misc = {},
       onFieldChange
     } = this.props;
     return (

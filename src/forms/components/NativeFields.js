@@ -1,8 +1,8 @@
 // @flow
 import React from 'react';
-import type { RenderField, FieldDef, OnChange } from './types';
+import type { RenderField, FieldDef, OnFieldChange } from './types';
 
-const renderField: RenderField = (field: FieldDef, onChange: OnChange) => {
+const renderField: RenderField = (field: FieldDef, onChange: OnFieldChange) => {
   const {
     disabled,
     id,

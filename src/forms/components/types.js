@@ -9,11 +9,12 @@ export type FormContextData = {
   isValid: boolean,
   options: { [string]: Options },
   registerField: any,
-  onFieldChange: OnChange
+  renderField: RenderField,
+  onFieldChange: OnFieldChange
 };
 
 export type Field = FieldDef & {
-  onFieldChange: OnChange,
+  onFieldChange: OnFieldChange,
   registerField: FieldDef => void
 };
 
@@ -125,7 +126,7 @@ export type CreateFieldDef = ($Shape<FieldDef>) => FieldDef;
 
 export type MapFieldsById = (FieldDef[]) => FieldsById;
 
-export type OnChange = (id: string, value: any) => void;
+export type OnFieldChange = (id: string, value: any) => void;
 
 export type RegisterField = (FieldDef, FieldDef[], FormValue) => FieldDef[];
 export type RegisterFields = (FieldDef[], FormValue) => FieldDef[];
@@ -144,4 +145,4 @@ export type CalculateFormValue = (FieldDef[]) => FormValue;
 
 export type OmitFieldValue = FieldDef => boolean;
 
-export type RenderField = (FieldDef, OnChange) => any;
+export type RenderField = (FieldDef, OnFieldChange) => any;
