@@ -13,8 +13,7 @@ import {
   processFields,
   registerFields,
   splitDelimitedValue,
-  updateFieldValue,
-  validateField
+  updateFieldValue
 } from './utils';
 import type { FieldDef, FormState } from './types';
 
@@ -160,77 +159,6 @@ describe('evaluateRule', () => {
 //     expect(evaluateAllRules()).toEqual(true);
 //   });
 // });
-
-describe('validateField', () => {
-  test('visible, optional field is always valid', () => {
-    const testField = {
-      ...field1,
-      visible: true,
-      required: false
-    };
-    expect(validateField(testField).isValid).toBe(true);
-  });
-
-  test('visible, required field with empty string value is valid', () => {
-    const testField = {
-      ...field1,
-      visible: true,
-      required: true,
-      value: ''
-    };
-    expect(validateField(testField).isValid).toBe(false);
-  });
-
-  test('visible, required field with numberical value 0 is valid', () => {
-    const testField = {
-      ...field1,
-      visible: true,
-      required: true,
-      value: 0
-    };
-    expect(validateField(testField).isValid).toBe(true);
-  });
-
-  test('visible, required field with false value is valid', () => {
-    const testField = {
-      ...field1,
-      visible: true,
-      required: true,
-      value: false
-    };
-    expect(validateField(testField).isValid).toBe(true);
-  });
-
-  test('visible, required field with string value is valid', () => {
-    const testField = {
-      ...field1,
-      visible: true,
-      required: true,
-      value: 'test'
-    };
-    expect(validateField(testField).isValid).toBe(true);
-  });
-
-  test('visible, required field with empty array value is valid', () => {
-    const testField = {
-      ...field1,
-      visible: true,
-      required: true,
-      value: []
-    };
-    expect(validateField(testField).isValid).toBe(false);
-  });
-
-  test('visible, required field with populated array value is valid', () => {
-    const testField = {
-      ...field1,
-      visible: true,
-      required: true,
-      value: [1]
-    };
-    expect(validateField(testField).isValid).toBe(true);
-  });
-});
 
 describe('processFields', () => {
   const triggerField = createField({

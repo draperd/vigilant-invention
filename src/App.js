@@ -9,7 +9,32 @@ import FormBuilder from './forms/components/FormBuilder';
 import FieldText from './forms/components/Atlaskit/FieldText';
 import FormButton from './forms/components/Atlaskit/FormButton';
 
+import { OptionsHandler } from './forms/components/types';
 import { createTeamForm, form1 } from './definitions';
+
+const teamFormOptionsHandler: OptionsHandler = (fieldId: string) => {
+  switch (fieldId) {
+    case 'ISSUE_SOURCE':
+      const options: Options = [
+        {
+          items: [
+            {
+              label: 'Board 1',
+              value: 'BOARD1'
+            },
+            {
+              label: 'Project A',
+              value: 'PROJ_A'
+            }
+          ]
+        }
+      ];
+      return options;
+    default: {
+      return null;
+    }
+  }
+};
 
 class App extends Component {
   constructor(props) {
@@ -38,6 +63,7 @@ class App extends Component {
               onChange={(akFormValue, isValid) => {
                 this.setState({ akFormValue, akButtonDisabled: !isValid });
               }}
+              optionsHandler={teamFormOptionsHandler}
               renderField={renderAkField}
             />
             <div>

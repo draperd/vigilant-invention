@@ -3,26 +3,36 @@ import type { Node } from 'react';
 
 export type Value = any;
 
-export type FormContextData = {
-  fields: FieldDef[],
-  value: FormValue,
-  isValid: boolean,
-  options: { [string]: Options },
-  registerField: any,
-  renderField: RenderField,
-  onFieldChange: OnFieldChange
-};
-
-export type Field = FieldDef & {
-  onFieldChange: OnFieldChange,
-  registerField: FieldDef => void
-};
-
 export type Rule = {
   field: string,
   is?: Value[],
   isNot?: Value[]
 };
+
+export type OnFieldChange = (id: string, value: any) => void;
+
+export type Validator = string;
+
+export type ValidationRules = {
+  [Validator]: any
+};
+
+export type Option =
+  | {
+      label?: string,
+      value: Value,
+      misc?: any
+    }
+  | string;
+
+export type OptionGroup = {
+  heading?: string,
+  items: Option[]
+};
+
+export type Options = OptionGroup[];
+
+export type OptionsHandler = string => Options | void;
 
 export type FieldDef = {
   id: string,
@@ -53,35 +63,18 @@ export type FieldDef = {
   }
 };
 
-export type Option =
-  | {
-      label?: string,
-      value: Value,
-      misc?: any
-    }
-  | string;
-
-export type OptionGroup = {
-  heading?: string,
-  items: Option[]
+export type Field = FieldDef & {
+  onFieldChange: OnFieldChange,
+  registerField: FieldDef => void
 };
 
-export type Options = OptionGroup[];
-
-export type Validator = string;
-
-export type ValidationRules = {
-  [Validator]: any
-};
+export type RenderField = (FieldDef, OnFieldChange) => any;
 
 export type FormValue = {
   [string]: Value
 };
 
 export type OnFormChange = (FormValue, boolean) => void;
-
-export type OptionsHandler = string => Options | void;
-
 export type FormProps = {
   defaultFields: FieldDef[],
   value?: FormValue,
@@ -126,8 +119,6 @@ export type CreateFieldDef = ($Shape<FieldDef>) => FieldDef;
 
 export type MapFieldsById = (FieldDef[]) => FieldsById;
 
-export type OnFieldChange = (id: string, value: any) => void;
-
 export type RegisterField = (FieldDef, FieldDef[], FormValue) => FieldDef[];
 export type RegisterFields = (FieldDef[], FormValue) => FieldDef[];
 
@@ -145,4 +136,12 @@ export type CalculateFormValue = (FieldDef[]) => FormValue;
 
 export type OmitFieldValue = FieldDef => boolean;
 
-export type RenderField = (FieldDef, OnFieldChange) => any;
+export type FormContextData = {
+  fields: FieldDef[],
+  value: FormValue,
+  isValid: boolean,
+  options: { [string]: Options },
+  registerField: any,
+  renderField: RenderField,
+  onFieldChange: OnFieldChange
+};
