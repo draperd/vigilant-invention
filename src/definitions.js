@@ -110,6 +110,9 @@ const createTeamForm: FieldDef[] = [
       matchesRegEx: {
         pattern: '^[\\d]+$',
         message: 'Length can only be in whole numbers'
+      },
+      fallsWithinNumericalRange: {
+        min: 0
       }
     }
   },

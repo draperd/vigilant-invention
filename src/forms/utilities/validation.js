@@ -23,6 +23,14 @@ export type MatchesRegEx = ({
   message: string
 }) => void | string;
 
+export type FallsWithinNumericalRange = ({
+  value: Value,
+  min?: number,
+  max?: number,
+  required?: boolean,
+  message: string
+}) => void | string;
+
 export const lengthIsGreaterThan: LengthIsGreaterThan = ({
   value,
   length,
@@ -59,10 +67,43 @@ export const matchesRegEx: MatchesRegEx = ({
   }
 };
 
+export const getDefaultNumericalRangeErrorMessages = (
+  min: number | void,
+  max: number | void
+) => {
+  if (typeof min !== 'undefined' && typeof max !== 'undefined') {
+    return `Value cannot be less than ${min} or greater than ${max}`;
+  } else if (typeof min !== 'undefined') {
+    return `Value cannot be less than ${min}`;
+  } else if (typeof max !== 'undefined') {
+    return `Value cannot be greater than ${max}`;
+  }
+};
+
+export const fallsWithinNumericalRange: FallsWithinNumericalRange = ({
+  value,
+  min,
+  max,
+  required,
+  message
+}) => {
+  const parsedValue = parseFloat(value);
+  if (isNaN(parsedValue)) {
+    return message || 'Value must be a number';
+  }
+  if (typeof min !== 'undefined' && value < min) {
+    return message || getDefaultNumericalRangeErrorMessages(min, max);
+  }
+  if (typeof max !== 'undefined' && value > max) {
+    return message || getDefaultNumericalRangeErrorMessages(min, max);
+  }
+};
+
 export const validators = {
   lengthIsGreaterThan,
   lengthIsLessThan,
-  matchesRegEx
+  matchesRegEx,
+  fallsWithinNumericalRange
 };
 
 export const validateField: ValidateField = field => {
@@ -78,6 +119,7 @@ export const validateField: ValidateField = field => {
     isValid =
       Object.keys(validWhen).reduce((allValidatorsPass, validator) => {
         if (typeof validators[validator] === 'function') {
+          // $FlowFixMe
           let validationConfig = validWhen[validator];
           validationConfig.value = value;
           let message = validators[validator](validationConfig);

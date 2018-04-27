@@ -11,12 +11,16 @@ export type Rule = {
 
 export type OnFieldChange = (id: string, value: any) => void;
 
-export type ValidatorId = string;
+export type ValidatorId =
+  | 'lengthIsGreaterThan'
+  | 'lengthIsLessThan'
+  | 'matchesRegEx'
+  | 'fallsWithinNumericalRange';
 
 export type ValidationConfig = any;
 
 export type ValidationRules = {
-  [ValidatorId]: ValidationConfig
+  [key: ValidatorId]: ValidationConfig
 };
 
 export type Option =

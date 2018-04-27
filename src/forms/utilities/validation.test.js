@@ -1,5 +1,7 @@
 // @flow
 import {
+  fallsWithinNumericalRange,
+  getDefaultNumericalRangeErrorMessages,
   lengthIsGreaterThan,
   lengthIsLessThan,
   matchesRegEx,
@@ -140,5 +142,71 @@ describe('matchesRegEx validator', () => {
     expect(
       matchesRegEx({ value: '1234', pattern: '^[\\d]+$', message: 'Fail' })
     ).toBeUndefined();
+  });
+});
+
+describe('getDefaultNumericalRangeErrorMessages', () => {
+  test('for min and max', () => {
+    expect(getDefaultNumericalRangeErrorMessages(1, 5)).toEqual(
+      'Value cannot be less than 1 or greater than 5'
+    );
+  });
+  test('for just min', () => {
+    expect(getDefaultNumericalRangeErrorMessages(1)).toEqual(
+      'Value cannot be less than 1'
+    );
+  });
+  test('for just max', () => {
+    expect(getDefaultNumericalRangeErrorMessages(undefined, 5)).toEqual(
+      'Value cannot be greater than 5'
+    );
+  });
+});
+
+describe('fallsWithinNumericalRange', () => {
+  test('fails when given a non-numerical number', () => {
+    expect(
+      fallsWithinNumericalRange({ value: 'abc', min: 5, message: 'Fail' })
+    ).toBe('Fail');
+  });
+
+  test('succeeds with just a min', () => {
+    expect(
+      fallsWithinNumericalRange({
+        value: '5',
+        min: 1,
+        message: 'Fail'
+      })
+    ).toBeUndefined();
+  });
+
+  test('succeeds with just a max', () => {
+    expect(
+      fallsWithinNumericalRange({
+        value: 6,
+        max: 10,
+        message: 'Fail'
+      })
+    ).toBeUndefined();
+  });
+
+  test('fails with just a min', () => {
+    expect(
+      fallsWithinNumericalRange({
+        value: '5',
+        min: 10,
+        message: 'Fail'
+      })
+    ).toBe('Fail');
+  });
+
+  test('fails with just a max', () => {
+    expect(
+      fallsWithinNumericalRange({
+        value: 6,
+        max: 5,
+        message: 'Fail'
+      })
+    ).toBe('Fail');
   });
 });
