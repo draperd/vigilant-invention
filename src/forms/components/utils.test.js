@@ -6,6 +6,7 @@ import {
   evaluateRule,
   evaluateAllRules,
   fieldDefIsValid,
+  getFirstDefinedValue,
   getMissingItems,
   joinDelimitedValue,
   mapFieldsById,
@@ -448,6 +449,43 @@ describe('determineChangedValues', () => {
   });
   test('b and d were removed', () => {
     expect(changes[1].value).toEqual(['b', 'd']);
+  });
+});
+
+describe('getFirstDefinedValue', () => {
+  test('boolean', () => {
+    expect(getFirstDefinedValue(undefined, undefined, false, true)).toEqual(
+      false
+    );
+  });
+  test('number', () => {
+    expect(getFirstDefinedValue(undefined, 0, 10)).toEqual(0);
+  });
+});
+
+describe('default value handling', () => {
+  const field: FieldDef = {
+    id: 'WITH_DEFAULT',
+    name: 'test',
+    type: 'text',
+    defaultValue: 'bob'
+  };
+
+  test('default value is assigned to value', () => {
+    const processedFields = processFields([field]);
+    expect(processedFields[0].value).toEqual('bob');
+  });
+
+  test('Value takes precedence over defaultValue', () => {
+    field.value = 'ted';
+    const processedFields = processFields([field]);
+    expect(processedFields[0].value).toEqual('ted');
+  });
+
+  test('Falsy value takes precedence over defaultValue', () => {
+    field.value = false;
+    const processedFields = processFields([field]);
+    expect(processedFields[0].value).toEqual(false);
   });
 });
 

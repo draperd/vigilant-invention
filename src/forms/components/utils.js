@@ -107,6 +107,7 @@ export const processFields: ProcessFields = fields => {
   const fieldsById = mapFieldsById(fields);
   const updatedFields = fields.map(field => {
     const {
+      defaultValue,
       value,
       visible,
       required,
@@ -117,9 +118,13 @@ export const processFields: ProcessFields = fields => {
       disabledWhen = []
     } = field;
 
-    let processedValue = value;
-    if (trimValue && value && typeof value.trim === 'function') {
-      processedValue = value.trim();
+    let processedValue = typeof value !== 'undefined' ? value : defaultValue;
+    if (
+      trimValue &&
+      processedValue &&
+      typeof processedValue.trim === 'function'
+    ) {
+      processedValue = processedValue.trim();
     }
     return Object.assign({}, field, {
       value: processedValue,
@@ -184,14 +189,30 @@ export const createField: CreateFieldDef = field => {
   };
 };
 
+export const getFirstDefinedValue = (...values: Value) => {
+  let valueToReturn;
+  values.some(value => {
+    if (typeof value !== 'undefined') {
+      valueToReturn = value;
+      return true;
+    }
+    return false;
+  });
+  return valueToReturn;
+};
+
 // Because this function can be passed with the state of a component form
 // it is not mutating the supplied fields array but returning a new instance
 // each time, this is less efficient (when passing entire fieldDef arrays to the
 // form) but safer when children of forms are registering themselves
 export const registerField: RegisterField = (field, fields, formValue) => {
   if (fieldDefIsValid(field, fields)) {
-    const { name, value, valueDelimiter } = field;
-    field.defaultValue = formValue[name] || value;
+    const { defaultValue, name, value, valueDelimiter } = field;
+    field.defaultValue = getFirstDefinedValue(
+      formValue[name],
+      value,
+      defaultValue
+    );
     field.value = splitDelimitedValue(value, valueDelimiter);
     return fields.concat(field);
   }
@@ -202,9 +223,14 @@ export const registerFields: RegisterFields = (fieldsToValidate, formValue) => {
   const fields = [];
   fieldsToValidate.forEach(field => {
     if (fieldDefIsValid(field, fields)) {
-      const { name, value, valueDelimiter } = field;
-      field.defaultValue = formValue[name] || value;
-      field.value = splitDelimitedValue(value, valueDelimiter);
+      const { defaultValue, name, value, valueDelimiter } = field;
+      const initialValue = getFirstDefinedValue(
+        formValue[name],
+        value,
+        defaultValue
+      );
+      field.defaultValue = initialValue;
+      field.value = splitDelimitedValue(initialValue, valueDelimiter);
       fields.push(field);
     }
   });

@@ -7,7 +7,7 @@ const createTeamForm: FieldDef[] = [
     type: 'radiogroup',
     label: 'Plan type',
     name: 'planType',
-    value: 'POINTS',
+    defaultValue: 'POINTS',
     options: [
       {
         items: [
@@ -43,7 +43,7 @@ const createTeamForm: FieldDef[] = [
     type: 'select',
     name: 'type',
     label: 'Team type',
-    value: 'SCRUM',
+    defaultValue: 'SCRUM',
     required: true,
     options: [
       {
@@ -59,6 +59,7 @@ const createTeamForm: FieldDef[] = [
     type: 'text',
     name: 'velocity',
     label: 'Velocity (pts)',
+    defaultValue: 30,
     visibleWhen: [
       {
         field: 'PLAN_TYPE',
