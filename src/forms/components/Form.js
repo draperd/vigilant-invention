@@ -1,5 +1,5 @@
 // @flow
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import DefaultField from './DefaultField';
 import {
   getNextStateFromFields,
@@ -128,11 +128,11 @@ export default class Form extends Component<FormProps, FormState> {
   render() {
     const { children, defaultFields } = this.props;
     const context = this.createFormContext();
-    if (defaultFields) {
-      return this.renderFields(context);
-    }
     return (
-      <FormContext.Provider value={context}>{children}</FormContext.Provider>
+      <FormContext.Provider value={context}>
+        <Fragment>{defaultFields && this.renderFields(context)}</Fragment>
+        {children}
+      </FormContext.Provider>
     );
   }
 }

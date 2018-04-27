@@ -1,16 +1,14 @@
-import React, { Component, Fragment } from 'react';
-import Button from '@atlaskit/button';
+import React, { Component } from 'react';
 import './App.css';
 
-import Form, { FormContext } from './forms/components/Form';
+import Form from './forms/components/Form';
 import renderAkField from './forms/components/AtlasKitFields';
-import renderNativeField from './forms/components/NativeFields';
 import FormBuilder from './forms/components/FormBuilder';
 import FieldText from './forms/components/Atlaskit/FieldText';
 import FormButton from './forms/components/Atlaskit/FormButton';
 
 import { OptionsHandler } from './forms/components/types';
-import { createTeamForm, form1 } from './definitions';
+import { createTeamForm } from './definitions';
 
 const teamFormOptionsHandler: OptionsHandler = (fieldId: string) => {
   switch (fieldId) {
@@ -37,72 +35,24 @@ const teamFormOptionsHandler: OptionsHandler = (fieldId: string) => {
 };
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      akButtonDisabled: false,
-      akFormValue: {},
-      nativeButtonIsDisabled: false,
-      nativeFormValue: {}
-    };
-  }
   render() {
-    const {
-      akButtonDisabled,
-      akFormValue,
-      nativeButtonIsDisabled,
-      nativeFormValue
-    } = this.state;
     return (
       <div>
         <div className="App">
           <section>
             <Form
               defaultFields={createTeamForm}
-              value={akFormValue}
-              onChange={(akFormValue, isValid) => {
-                this.setState({ akFormValue, akButtonDisabled: !isValid });
-              }}
               optionsHandler={teamFormOptionsHandler}
               renderField={renderAkField}
-            />
-            <div>
-              <Button
-                appearance="primary"
-                isDisabled={akButtonDisabled}
-                onClick={() => {
-                  console.log('AtlasKit Form value is', this.state.akFormValue);
-                }}
-              >
-                OK
-              </Button>
-            </div>
+            >
+              <FormButton
+                onClick={(value: FormValue) =>
+                  console.log('Definition button value', value)
+                }
+              />
+            </Form>
           </section>
           <section>
-            {/* <Form
-              defaultFields={form1}
-              value={nativeFormValue}
-              onChange={(nativeFormValue, isValid) => {
-                this.setState({
-                  nativeFormValue,
-                  nativeButtonIsDisabled: !isValid
-                });
-              }}
-              renderField={renderNativeField}
-            />
-            <div>
-              <button
-                disabled={nativeButtonIsDisabled}
-                onClick={() => {
-                  console.log(
-                    'Native form value is',
-                    this.state.nativeFormValue
-                  );
-                }}
-              >
-                OK
-              </button>
-            </div> */}
             <Form>
               <FieldText
                 id="NAME"
