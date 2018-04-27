@@ -62,7 +62,8 @@ export type FieldDef = {
   options?: Options,
   misc?: {
     [string]: any
-  }
+  },
+  trimValue?: boolean
 };
 
 export type Field = FieldDef & {

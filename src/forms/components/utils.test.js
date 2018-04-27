@@ -450,3 +450,19 @@ describe('determineChangedValues', () => {
     expect(changes[1].value).toEqual(['b', 'd']);
   });
 });
+
+describe('trimming behaviour', () => {
+  const field: FieldDef = {
+    id: 'TO_BE_TRIMMED',
+    name: 'test',
+    type: 'text',
+    value: '   foo     ',
+    trimValue: true
+  };
+
+  test('leading and trailing whitespace is removed from value', () => {
+    const processedFields = processFields([field]);
+    const trimmedField = processedFields[0];
+    expect(trimmedField.value).toEqual('foo');
+  });
+});

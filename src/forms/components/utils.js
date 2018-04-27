@@ -107,14 +107,22 @@ export const processFields: ProcessFields = fields => {
   const fieldsById = mapFieldsById(fields);
   const updatedFields = fields.map(field => {
     const {
+      value,
       visible,
       required,
       disabled,
+      trimValue,
       visibleWhen = [],
       requiredWhen = [],
       disabledWhen = []
     } = field;
+
+    let processedValue = value;
+    if (trimValue && value && typeof value.trim === 'function') {
+      processedValue = value.trim();
+    }
     return Object.assign({}, field, {
+      value: processedValue,
       visible: evaluateAllRules(visibleWhen, fieldsById, visible !== false),
       required: evaluateAllRules(requiredWhen, fieldsById, !!required),
       disabled: evaluateAllRules(disabledWhen, fieldsById, !!disabled)

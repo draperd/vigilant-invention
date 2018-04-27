@@ -24,6 +24,7 @@ const createTeamForm: FieldDef[] = [
     name: 'name',
     label: 'Team name',
     required: true,
+    trimValue: true,
     validWhen: {
       lengthIsLessThan: {
         length: 256,
