@@ -65,7 +65,7 @@ const createTeamForm: FieldDef[] = [
         is: ['POINTS']
       }
     ],
-    omitWhenValueIs: ['HOURS', 'DAYS']
+    omitWhenHidden: true
   },
   {
     id: 'VELOCITY_HOURS',
@@ -78,7 +78,7 @@ const createTeamForm: FieldDef[] = [
         is: ['HOURS']
       }
     ],
-    omitWhenValueIs: ['POINTS', 'DAYS']
+    omitWhenHidden: true
   },
   {
     id: 'VELOCITY_DAYS',
@@ -91,13 +91,14 @@ const createTeamForm: FieldDef[] = [
         is: ['DAYS']
       }
     ],
-    omitWhenValueIs: ['POINTS', 'HOURS']
+    omitWhenHidden: true
   },
   {
     id: 'ITERATION_LENGTH',
     type: 'text',
     name: 'iterationLength',
     label: 'Iteration length (weeks)',
+    omitWhenHidden: true,
     visibleWhen: [
       {
         field: 'TEAM_TYPE',
