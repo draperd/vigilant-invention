@@ -1,8 +1,9 @@
 // @flow
 import {
-  validateField,
   lengthIsGreaterThan,
-  lengthIsLessThan
+  lengthIsLessThan,
+  matchesRegEx,
+  validateField
 } from './validation';
 import { createField } from '../components/utils.js';
 import type { ValidateField, ValidateAllFields } from '../components/types';
@@ -125,5 +126,19 @@ describe('lengthIsLessThan validator', () => {
         message: 'Fail'
       })
     ).toBe('Fail');
+  });
+});
+
+describe('matchesRegEx validator', () => {
+  test('fails when letters provided for numbers only pattern', () => {
+    expect(
+      matchesRegEx({ value: '12a3', pattern: '^[\\d]+$', message: 'Fail' })
+    ).toBe('Fail');
+  });
+
+  test('succeeds when numbers provided for numbers only pattern', () => {
+    expect(
+      matchesRegEx({ value: '1234', pattern: '^[\\d]+$', message: 'Fail' })
+    ).toBeUndefined();
   });
 });

@@ -105,7 +105,13 @@ const createTeamForm: FieldDef[] = [
         field: 'TEAM_TYPE',
         is: ['SCRUM']
       }
-    ]
+    ],
+    validWhen: {
+      matchesRegEx: {
+        pattern: '^[\\d]+$',
+        message: 'Length can only be in whole numbers'
+      }
+    }
   },
   {
     id: 'MEMBERS',

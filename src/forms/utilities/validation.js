@@ -17,6 +17,12 @@ export type LengthIsLessThan = ({
   message: string
 }) => void | string;
 
+export type MatchesRegEx = ({
+  value: Value,
+  pattern: string,
+  message: string
+}) => void | string;
+
 export const lengthIsGreaterThan: LengthIsGreaterThan = ({
   value,
   length,
@@ -41,9 +47,22 @@ export const lengthIsLessThan: LengthIsLessThan = ({
   }
 };
 
+// TODO: Consider option for inverting rule...
+export const matchesRegEx: MatchesRegEx = ({
+  value,
+  pattern = '.*',
+  message
+}) => {
+  const regExObj = new RegExp(pattern);
+  if (!regExObj.test(value)) {
+    return message || 'Invalid input provided'; // <= Terrible message!
+  }
+};
+
 export const validators = {
   lengthIsGreaterThan,
-  lengthIsLessThan
+  lengthIsLessThan,
+  matchesRegEx
 };
 
 export const validateField: ValidateField = field => {
