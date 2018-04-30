@@ -9,9 +9,10 @@
     "@atlaskit/field-range": "^2.6.0",
     "@atlaskit/field-text": "^4.2.0",
     "@atlaskit/field-text-area": "^1.2.0",
-    "@atlaskit/icon": "^10.12.1",
+    "@atlaskit/icon": "^11.0.1",
     "@atlaskit/multi-select": "^8.1.1",
     "@atlaskit/single-select": "^3.3.1",
+    "@atlaskit/tooltip": "^9.1.4",
     "flow-bin": "^0.68.0",
     "flow-typed": "^2.3.0",
     "husky": "^0.14.3",
@@ -21,6 +22,7 @@
     "react": "16.3",
     "react-dom": "16.3",
     "react-scripts": "1.1.1",
+    "styled-components": "^3.2.6",
     "watchman": "^1.0.0"
   },
   "lint-staged": {

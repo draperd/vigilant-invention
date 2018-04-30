@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import FieldText from '@atlaskit/field-text';
+import FieldText from './Atlaskit/FieldText';
 import FieldTextArea from '@atlaskit/field-text-area';
 import Checkbox from '@atlaskit/checkbox';
 import RadioGroup from '@atlaskit/field-radio-group';
@@ -12,7 +12,6 @@ import type { RenderField, FieldDef, OnFieldChange } from './types';
 const renderField: RenderField = (field: FieldDef, onChange: OnFieldChange) => {
   const {
     disabled,
-    errorMessages,
     id,
     isValid,
     name,
@@ -29,20 +28,7 @@ const renderField: RenderField = (field: FieldDef, onChange: OnFieldChange) => {
   const stringValue: string | void = value ? value.toString() : undefined;
   switch (type) {
     case 'text':
-      return (
-        <FieldText
-          key={id}
-          name={name}
-          label={label}
-          placeholder={placeholder}
-          disabled={disabled}
-          required={required}
-          isInvalid={!isValid}
-          invalidMessage={errorMessages}
-          value={stringValue}
-          onChange={(evt: any) => onChange(id, evt.target.value)}
-        />
-      );
+      return <FieldText key={id} {...field} />;
 
     case 'textarea':
       return (

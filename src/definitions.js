@@ -59,6 +59,7 @@ const createTeamForm: FieldDef[] = [
     type: 'text',
     name: 'velocity',
     label: 'Velocity (pts)',
+    description: 'Something about velocity',
     defaultValue: 30,
     visibleWhen: [
       {
@@ -73,6 +74,7 @@ const createTeamForm: FieldDef[] = [
     type: 'text',
     name: 'velocity',
     label: 'Velocity (hours)',
+    defaultValue: 200,
     visibleWhen: [
       {
         field: 'PLAN_TYPE',

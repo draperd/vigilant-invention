@@ -44,6 +44,7 @@ export type FieldDef = {
   id: string,
   name: string,
   label?: string,
+  description?: string,
   placeholder?: string,
   type: string,
   defaultValue?: void | string | number | boolean | Array<any>,
@@ -72,7 +73,7 @@ export type FieldDef = {
 
 export type Field = FieldDef & {
   onFieldChange: OnFieldChange,
-  registerField: FieldDef => void
+  registerField?: FieldDef => void
 };
 
 export type RenderField = (FieldDef, OnFieldChange) => any;

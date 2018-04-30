@@ -60,6 +60,7 @@ class App extends Component {
                 placeholder="Who are you?"
                 value=""
                 label="Name"
+                description="Tell me a bit about yourself"
                 required={true}
               />
               <FormButton
