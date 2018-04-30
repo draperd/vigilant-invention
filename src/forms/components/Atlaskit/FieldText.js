@@ -47,7 +47,7 @@ class AtlaskitFieldText extends React.Component<Field> {
       onFieldChange
     } = this.props;
     return (
-      <Layout>
+      <Layout id={id}>
         <FieldText
           key={id}
           name={name}

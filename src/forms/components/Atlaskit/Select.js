@@ -79,7 +79,7 @@ class AtlaskitSelect extends React.Component<Field> {
     });
 
     return (
-      <Layout>
+      <Layout id={id}>
         <SingleSelect
           key={id}
           name={name}
