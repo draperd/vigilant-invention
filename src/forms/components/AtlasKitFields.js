@@ -4,7 +4,7 @@ import FieldText from './Atlaskit/FieldText';
 import FieldTextArea from '@atlaskit/field-text-area';
 import Checkbox from '@atlaskit/checkbox';
 import RadioGroup from '@atlaskit/field-radio-group';
-import SingleSelect from '@atlaskit/single-select';
+import SingleSelect from './Atlaskit/Select';
 import MultiSelect from '@atlaskit/multi-select';
 import RepeatingFormField from './RepeatingFormField';
 import type { RenderField, FieldDef, OnFieldChange } from './types';
@@ -24,7 +24,6 @@ const renderField: RenderField = (field: FieldDef, onChange: OnFieldChange) => {
     misc = {}
   } = field;
   let items;
-  let defaultSelected;
   const stringValue: string | void = value ? value.toString() : undefined;
   switch (type) {
     case 'text':
@@ -61,55 +60,7 @@ const renderField: RenderField = (field: FieldDef, onChange: OnFieldChange) => {
       );
 
     case 'select':
-      items = options.map(option => {
-        const { heading, items = [] } = option;
-        return {
-          heading,
-          items: items.map(item => {
-            if (typeof item === 'string') {
-              const _item = {
-                content: item,
-                value: item,
-                isSelected: item === value
-              };
-              if (_item.isSelected) {
-                defaultSelected = _item;
-              }
-              return _item;
-            } else {
-              const _item = {
-                content: item.label || item.value,
-                value: item.value,
-                isSelected: item.value === value
-              };
-              if (_item.isSelected) {
-                defaultSelected = _item;
-              }
-              return _item;
-            }
-          })
-        };
-      });
-
-      return (
-        <div key={id}>
-          <SingleSelect
-            key={id}
-            name={name}
-            label={label}
-            defaultSelected={defaultSelected}
-            placeholder={placeholder}
-            disabled={disabled}
-            required={required}
-            isInvalid={!isValid}
-            value={stringValue}
-            items={items}
-            onSelected={evt => {
-              onChange(id, evt.item.value);
-            }}
-          />
-        </div>
-      );
+      return <SingleSelect key={id} {...field} />;
 
     case 'multiselect':
       const defaultSelectItems = [];
@@ -178,9 +129,6 @@ const renderField: RenderField = (field: FieldDef, onChange: OnFieldChange) => {
                 value: item,
                 isSelected: item === value
               };
-              if (_item.isSelected) {
-                defaultSelected = _item;
-              }
               return _item;
             } else {
               const _item = {
@@ -188,9 +136,6 @@ const renderField: RenderField = (field: FieldDef, onChange: OnFieldChange) => {
                 value: item.value,
                 isSelected: item.value === value
               };
-              if (_item.isSelected) {
-                defaultSelected = _item;
-              }
               return _item;
             }
           })

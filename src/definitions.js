@@ -43,6 +43,7 @@ const createTeamForm: FieldDef[] = [
     type: 'select',
     name: 'type',
     label: 'Team type',
+    description: 'Some important messagea about team type',
     defaultValue: 'SCRUM',
     required: true,
     options: [
