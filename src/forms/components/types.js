@@ -72,6 +72,7 @@ export type FieldDef = {
 };
 
 export type Field = FieldDef & {
+  fields: FieldDef[],
   onFieldChange: OnFieldChange,
   registerField?: FieldDef => void
 };

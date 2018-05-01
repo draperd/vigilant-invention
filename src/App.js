@@ -1,14 +1,16 @@
 import React, { Component } from 'react';
+import Tabs from '@atlaskit/tabs';
 import './App.css';
 
 import Form from './forms/components/Form';
+import FormFragment from './forms/components/FormFragment';
 import renderAkField from './forms/components/AtlasKitFields';
 import FormBuilder from './forms/components/FormBuilder';
 import FieldText from './forms/components/Atlaskit/FieldText';
 import FormButton from './forms/components/Atlaskit/FormButton';
 
 import { OptionsHandler } from './forms/components/types';
-import { createTeamForm } from './definitions';
+import { createTeamForm, frag1, frag2 } from './definitions';
 
 const teamFormOptionsHandler: OptionsHandler = (fieldId: string) => {
   switch (fieldId) {
@@ -36,6 +38,10 @@ const teamFormOptionsHandler: OptionsHandler = (fieldId: string) => {
 
 class App extends Component {
   render() {
+    const tabs = [
+      { label: 'Tab1', content: <FormFragment defaultFields={frag1} /> },
+      { label: 'Tab2', content: <FormFragment defaultFields={frag2} /> }
+    ];
     return (
       <div>
         <div className="App">
@@ -62,11 +68,30 @@ class App extends Component {
                 label="Name"
                 description="Tell me a bit about yourself"
                 required={true}
+                visibleWhen={[{ field: 'SHOW', is: ['YES'] }]}
+              />
+              <FieldText
+                id="SHOW"
+                name="show"
+                placeholder="Show the name field?"
+                value="YES"
+                label="Show"
               />
               <FormButton
                 label="Save"
                 onClick={(value: FormValue) =>
                   console.log('Inline button value', value)
+                }
+              />
+            </Form>
+          </section>
+          <section>
+            <Form renderField={renderAkField}>
+              <Tabs tabs={tabs} />
+              <FormButton
+                label="Frags"
+                onClick={(value: FormValue) =>
+                  console.log('Multi fragment form button value', value)
                 }
               />
             </Form>

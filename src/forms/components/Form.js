@@ -1,5 +1,6 @@
 // @flow
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
+import FormFragment from './FormFragment';
 import DefaultField from './DefaultField';
 import {
   getNextStateFromFields,
@@ -34,14 +35,14 @@ export default class Form extends Component<FormProps, FormState> {
       nextProps.defaultFields &&
       nextProps.defaultFields !== prevState.defaultFields
     ) {
-      let { defaultFields, value: valueFromProps } = nextProps;
       const { value: valueFromState } = prevState;
+
+      let { defaultFields, value: valueFromProps } = nextProps;
+      const { optionsHandler } = nextProps;
       const fields = registerFields(
         defaultFields,
         valueFromProps || valueFromState || {}
       );
-
-      const { optionsHandler } = nextProps;
       const nextState = getNextStateFromFields(fields, optionsHandler);
 
       return {
@@ -70,10 +71,23 @@ export default class Form extends Component<FormProps, FormState> {
   // Register field is provided in the context to allow children to register with this form...
   registerField(field: FieldDef) {
     let { fields = [], value = {} } = this.state;
-    fields = registerField(field, fields, value);
-    this.setState({
-      fields
-    });
+
+    if (fields.find(existingField => field.id === existingField.id)) {
+      // Don't register fields twice...
+      // console.warn("Field ID already in use", field.id);
+    } else {
+      fields = registerField(field, fields, value);
+      this.setState((state, props) => {
+        let updatedFields = fields.concat(state.fields);
+        const nextState = getNextStateFromFields(
+          updatedFields,
+          props.optionsHandler
+        );
+        return {
+          ...nextState
+        };
+      });
+    }
   }
 
   createFormContext() {
@@ -99,13 +113,7 @@ export default class Form extends Component<FormProps, FormState> {
     if (!visible) {
       return null;
     }
-    return (
-      <DefaultField
-        key={field.id}
-        field={field}
-        onChange={this.onFieldChange.bind(this)}
-      />
-    );
+    return <DefaultField key={field.id} field={field} onChange={onChange} />;
   }
 
   renderFields(context: FormContextData) {
@@ -127,10 +135,11 @@ export default class Form extends Component<FormProps, FormState> {
 
   render() {
     const { children, defaultFields } = this.props;
+    const { fields } = this.state;
     const context = this.createFormContext();
     return (
       <FormContext.Provider value={context}>
-        <Fragment>{defaultFields && this.renderFields(context)}</Fragment>
+        {defaultFields && <FormFragment defaultFields={fields} />}
         {children}
       </FormContext.Provider>
     );

@@ -192,6 +192,17 @@
     react-transition-group "^2.2.1"
     styled-components "1.4.6 - 3"
 
+"@atlaskit/tabs@^6.0.1":
+  version "6.0.1"
+  resolved "https://registry.yarnpkg.com/@atlaskit/tabs/-/tabs-6.0.1.tgz#a06fb474c0056da275da853d6f31dbab6e041d15"
+  dependencies:
+    "@atlaskit/theme" "^3.0.0"
+    classnames "^2.2.5"
+    css-element-queries "^0.3.2"
+    debounce "^1.0.0"
+    keycode "^2.1.7"
+    styled-components "1.4.6 - 3"
+
 "@atlaskit/tag-group@^3.6.1":
   version "3.6.1"
   resolved "https://registry.yarnpkg.com/@atlaskit/tag-group/-/tag-group-3.6.1.tgz#32255e0b25f47c3ac29908b2c62fd4f4614c5ac7"
@@ -2105,6 +2116,10 @@ css-color-names@0.0.4:
   version "0.0.4"
   resolved "https://registry.yarnpkg.com/css-color-names/-/css-color-names-0.0.4.tgz#808adc2e79cf84738069b646cb20ec27beb629e0"
 
+css-element-queries@^0.3.2:
+  version "0.3.2"
+  resolved "https://registry.yarnpkg.com/css-element-queries/-/css-element-queries-0.3.2.tgz#535d80891b3af21395d005f19905fe5154b5ccff"
+
 css-loader@0.28.7:
   version "0.28.7"
   resolved "https://registry.yarnpkg.com/css-loader/-/css-loader-0.28.7.tgz#5f2ee989dd32edd907717f953317656160999c1b"
@@ -2248,6 +2263,10 @@ date-fns@^1.27.2:
 date-now@^0.1.4:
   version "0.1.4"
   resolved "https://registry.yarnpkg.com/date-now/-/date-now-0.1.4.tgz#eaf439fd4d4848ad74e5cc7dbef200672b9e345b"
+
+debounce@^1.0.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/debounce/-/debounce-1.1.0.tgz#6a1a4ee2a9dc4b7c24bb012558dbcdb05b37f408"
 
 debug@2.6.9, debug@^2.1.2, debug@^2.2.0, debug@^2.3.3, debug@^2.6.0, debug@^2.6.6, debug@^2.6.8, debug@^2.6.9:
   version "2.6.9"

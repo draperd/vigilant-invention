@@ -33,40 +33,45 @@ class AtlaskitFieldText extends React.Component<Field> {
     }
   }
   render() {
-    const {
-      disabled,
-      errorMessages,
-      id,
-      isValid,
-      name,
-      placeholder,
-      required,
-      value,
-      label,
-      description,
-      onFieldChange
-    } = this.props;
-    return (
-      <Layout id={id}>
-        <FieldText
-          key={id}
-          name={name}
-          label={label}
-          placeholder={placeholder}
-          disabled={disabled}
-          required={required}
-          isInvalid={!isValid}
-          invalidMessage={errorMessages}
-          value={value}
-          onChange={(evt: any) => onFieldChange(id, evt.target.value)}
-        />
-        {description && (
-          <Tooltip content={description} position="right">
-            <InfoIcon primaryColor="#6554C0" />
-          </Tooltip>
-        )}
-      </Layout>
-    );
+    const { id, fields = [], onFieldChange } = this.props;
+    const fieldToRender = fields.find(field => field.id === id);
+    if (fieldToRender && fieldToRender.visible) {
+      const {
+        disabled,
+        errorMessages,
+        id,
+        isValid,
+        name,
+        placeholder,
+        required,
+        value,
+        label,
+        description
+      } = fieldToRender;
+      return (
+        <Layout id={id}>
+          <FieldText
+            key={id}
+            name={name}
+            label={label}
+            placeholder={placeholder}
+            disabled={disabled}
+            required={required}
+            isInvalid={!isValid}
+            invalidMessage={errorMessages}
+            value={value}
+            onChange={(evt: any) => onFieldChange(id, evt.target.value)}
+          />
+          {description && (
+            <Tooltip content={description} position="right">
+              <InfoIcon primaryColor="#6554C0" />
+            </Tooltip>
+          )}
+        </Layout>
+      );
+    }
+
+    return null;
   }
 }
 

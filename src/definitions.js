@@ -442,4 +442,28 @@ const formBuilder = [
   }
 ];
 
-export { createTeamForm, form1, formBuilder, field };
+const frag1: FieldDef[] = [
+  {
+    id: 'ONE',
+    type: 'text',
+    name: 'prop1',
+    label: 'First'
+  }
+];
+
+const frag2: FieldDef[] = [
+  {
+    id: 'TWO',
+    type: 'text',
+    name: 'prop2',
+    label: 'Second',
+    visibleWhen: [
+      {
+        field: 'ONE',
+        is: ['show']
+      }
+    ]
+  }
+];
+
+export { createTeamForm, form1, frag1, frag2, formBuilder, field };
