@@ -447,7 +447,7 @@ const frag1: FieldDef[] = [
     id: 'ONE',
     type: 'text',
     name: 'prop1',
-    label: 'First',
+    label: 'Show the field in the next tab',
     value: 'show'
   }
 ];
@@ -457,7 +457,7 @@ const frag2: FieldDef[] = [
     id: 'TWO',
     type: 'text',
     name: 'prop2',
-    label: 'Second',
+    label: 'Shown when the field in the first tab has the value "show"',
     visibleWhen: [
       {
         field: 'ONE',
