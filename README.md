@@ -27,8 +27,9 @@ Form definitions support:
 
 The code currently lives within an application built using create-react-app. The best way to evaluate this is to clone/fork the project and run `yarn install` then `yarn start` to see it in action.
 
-Form definitions can be found here.
-The app layout can be found here.
+Example form definitions can be found [here](https://github.com/draperd/vigilant-invention/blob/master/src/definitions.js).
+
+The app layout can be found [here](https://github.com/draperd/vigilant-invention/blob/master/src/App.js).
 
 But for a brief summary...
 
