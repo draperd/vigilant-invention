@@ -39,8 +39,18 @@ const teamFormOptionsHandler: OptionsHandler = (fieldId: string) => {
 class App extends Component {
   render() {
     const tabs = [
-      { label: 'Tab1', content: <FormFragment defaultFields={frag1} /> },
-      { label: 'Tab2', content: <FormFragment defaultFields={frag2} /> }
+      {
+        label: 'Tab1',
+        content: (
+          <div>
+            <FormFragment defaultFields={frag1} />
+          </div>
+        )
+      },
+      {
+        label: 'Tab2',
+        content: <FormFragment defaultFields={frag2} />
+      }
     ];
     return (
       <div>

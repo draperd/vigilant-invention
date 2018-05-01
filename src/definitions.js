@@ -447,7 +447,8 @@ const frag1: FieldDef[] = [
     id: 'ONE',
     type: 'text',
     name: 'prop1',
-    label: 'First'
+    label: 'First',
+    value: 'show'
   }
 ];
 

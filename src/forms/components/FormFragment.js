@@ -1,6 +1,7 @@
 // @flow
 import React, { Component, Fragment } from 'react';
 import { FormContext } from './Form';
+import { getFirstDefinedValue } from './utils';
 import type { FieldDef, FormContextData } from './types';
 
 export type InnerFormFragmentProps = FormContextData & {
@@ -28,13 +29,18 @@ class FormFragment extends Component<InnerFormFragmentProps, void> {
       defaultFields = [],
       fields,
       onFieldChange,
-      renderField
+      renderField,
+      value
     } = this.props;
     const renderedFields = defaultFields.map(field => {
       const fieldToRender = fields.find(
         registeredField => registeredField.id === field.id
       );
       if (fieldToRender && fieldToRender.visible) {
+        fieldToRender.value = getFirstDefinedValue(
+          value[field.name],
+          field.value
+        );
         return renderField(fieldToRender, onFieldChange);
       }
       return null;

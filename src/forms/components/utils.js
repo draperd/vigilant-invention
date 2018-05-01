@@ -126,12 +126,13 @@ export const processFields: ProcessFields = fields => {
     ) {
       processedValue = processedValue.trim();
     }
-    return Object.assign({}, field, {
+    return {
+      ...field,
       value: processedValue,
       visible: evaluateAllRules(visibleWhen, fieldsById, visible !== false),
       required: evaluateAllRules(requiredWhen, fieldsById, !!required),
       disabled: evaluateAllRules(disabledWhen, fieldsById, !!disabled)
-    });
+    };
   });
   return updatedFields;
 };

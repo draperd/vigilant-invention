@@ -59,13 +59,18 @@ export default class Form extends Component<FormProps, FormState> {
     fields = updateFieldValue(id, value, fields);
     const nextState = getNextStateFromFields(fields, this.props.optionsHandler);
 
-    this.setState(nextState, () => {
-      const { onChange } = this.props;
-      const { value, isValid } = this.state;
-      if (onChange) {
-        onChange(value, isValid);
+    this.setState(
+      (state, props) => {
+        return nextState;
+      },
+      () => {
+        const { onChange } = this.props;
+        const { value, isValid } = nextState;
+        if (onChange) {
+          onChange(value, isValid);
+        }
       }
-    });
+    );
   }
 
   // Register field is provided in the context to allow children to register with this form...
@@ -78,7 +83,11 @@ export default class Form extends Component<FormProps, FormState> {
     } else {
       fields = registerField(field, fields, value);
       this.setState((state, props) => {
-        let updatedFields = fields.concat(state.fields);
+        const filteredFields = state.fields.filter(
+          existingField => existingField.id !== field.id
+        );
+        // let updatedFields = fields.concat(filteredFields);
+        let updatedFields = filteredFields.concat(field);
         const nextState = getNextStateFromFields(
           updatedFields,
           props.optionsHandler
