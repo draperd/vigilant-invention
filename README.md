@@ -23,3 +23,98 @@ Form definitions support:
 
 ...and there will be more capabilities yet to be added
 
+**This project isn't ready to be used yet - at the moment I'm just looking for feedback and validation on the approach.**
+
+The code currently lives within an application built using create-react-app. The best way to evaluate this is to clone/fork the project and run `yarn install` then `yarn start` to see it in action.
+
+Form definitions can be found here.
+The app layout can be found here.
+
+But for a brief summary...
+
+**Field Definition**
+You can define fields using the following structure:
+
+```JAVASCRIPT
+const fields = [
+  {
+    id: 'TEAMNAME',
+    type: 'text',
+    name: 'name',
+    label: 'Team name',
+    required: true,
+    trimValue: true,
+    validWhen: {
+      lengthIsLessThan: {
+        length: 256,
+        message: 'Team names can be a maximum of 255 characters in length'
+      }
+    }
+  },
+ ]
+ ```
+ 
+ You can then pass the definition directly into a Form component
+ 
+ ```JSX
+ <Form defaultFields={fields} />
+ ```
+ 
+ ...or you can build forms from multiple fragments
+ 
+ ```JSX
+ <Form>
+   <FormFragment defaultFields={fields1} />
+   <FormFragment defaultFields={fields2} />
+ </Form>
+ ```
+ 
+ ...or you can build forms from individual components
+ 
+ ```JSX
+ <Form>
+  <FieldText
+    id="NAME"
+    name="name"
+    placeholder="Who are you?"
+    value=""
+    label="Name"
+    description="Tell me a bit about yourself"
+    required={true}
+    visibleWhen={[{ field: 'SHOW', is: ['YES'] }]}
+  />
+</Form>
+```
+  
+**Field rendering**
+You can provide out-of-the-box or custom renderers and option handlers for your fields directly to the form (these will be used for all definitions in forms or fragements)
+  
+```JSX
+<Form
+  defaultFields={fields}
+  optionsHandler={myOptionsHandler}
+  renderField={atlaskitFieldRenderer}
+>
+```
+
+**Buttons**
+You can place buttons anywhere within the form (allowing complex layouts) where the button will have access to the current form value.
+
+```JSX
+<Form
+  defaultFields={fields}
+  optionsHandler={optionHandler}
+  renderField={nativeFieldRenderer}
+>
+  <FormButton
+    onClick={(value) =>
+      console.log('Definition button value', value)
+    }
+  />
+</Form>
+```
+  
+  
+ 
+ 
+
