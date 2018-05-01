@@ -55,7 +55,9 @@ const AppTabs = [
   {
     label: 'Single Definition',
     content: (
-      <div>
+      // Keep this as a span to avoid content between tabs "bleeding" - there seems to be some strange behaviour with the tab component
+      // If all tabs have the same root element then form context is shared
+      <span>
         <p>
           This is an example of the Form component given a single form
           definition
@@ -71,7 +73,7 @@ const AppTabs = [
             }
           />
         </Form>
-      </div>
+      </span>
     )
   },
   {
@@ -112,7 +114,8 @@ const AppTabs = [
   {
     label: 'Multiple definitions as fragments',
     content: (
-      <div>
+      // Needs to be different element to prevent tab bleed (in this case to prevent the form being disabled because of bleed from tab 1)
+      <section>
         <p>
           This is an example of a Form component with FormFragment components
           (each with their own definition) nested within a Tab container layout
@@ -127,7 +130,7 @@ const AppTabs = [
             }
           />
         </Form>
-      </div>
+      </section>
     )
   },
   {
