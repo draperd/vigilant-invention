@@ -3,28 +3,14 @@ import React from 'react';
 import FieldText from '../components/fields/atlaskit/FieldText';
 import FieldTextArea from '../components/fields/atlaskit/FieldTextArea';
 import Checkbox from '../components/fields/atlaskit/Checkbox';
-import RadioGroup from '@atlaskit/field-radio-group';
+import RadioGroup from '../components/fields/atlaskit/RadioGroup';
 import SingleSelect from '../components/fields/atlaskit/Select';
-import MultiSelect from '@atlaskit/multi-select';
+import MultiSelect from '../components/fields/atlaskit/MultiSelect';
 import RepeatingFormField from '../components/RepeatingFormField';
 import type { RenderField, FieldDef, OnFieldChange } from '../types';
 
 const renderField: RenderField = (field: FieldDef, onChange: OnFieldChange) => {
-  const {
-    disabled,
-    id,
-    isValid,
-    name,
-    options = [],
-    placeholder,
-    required,
-    type,
-    value,
-    label,
-    misc = {}
-  } = field;
-  let items;
-  const stringValue: string | void = value ? value.toString() : undefined;
+  const { id, type, label, misc = {} } = field;
   switch (type) {
     case 'text':
       return <FieldText key={id} {...field} />;
@@ -39,99 +25,10 @@ const renderField: RenderField = (field: FieldDef, onChange: OnFieldChange) => {
       return <SingleSelect key={id} {...field} />;
 
     case 'multiselect':
-      const defaultSelectItems = [];
-      items = options.map(option => ({
-        heading: option.heading,
-        items: option.items.map(item => {
-          if (typeof item === 'string') {
-            let isSelected = false;
-            if (value && Array.isArray(value) && value.includes(item)) {
-              isSelected = true;
-            }
-            const _item = {
-              content: item,
-              value: item,
-              isSelected
-            };
-            if (_item.isSelected) {
-              defaultSelectItems.push(_item);
-            }
-            return _item;
-          } else {
-            let isSelected = false;
-            if (value && Array.isArray(value) && value.includes(item.value)) {
-              isSelected = true;
-            }
-            const _item = {
-              content: item.label || item.value,
-              value: item.value,
-              isSelected
-            };
-            if (_item.isSelected) {
-              defaultSelectItems.push(_item);
-            }
-            return _item;
-          }
-        })
-      }));
-
-      return (
-        <div key={id}>
-          <MultiSelect
-            key={id}
-            name={name}
-            label={label}
-            defaultSelected={defaultSelectItems}
-            placeholder={placeholder}
-            disabled={disabled}
-            required={required}
-            isInvalid={!isValid}
-            value={stringValue}
-            items={items}
-            onSelectedChange={evt => {
-              onChange(id, evt.items.map(item => item.value));
-            }}
-          />
-        </div>
-      );
+      return <MultiSelect key={id} {...field} />;
 
     case 'radiogroup':
-      items = options.reduce((itemsSoFar, option) => {
-        return itemsSoFar.concat(
-          option.items.map(item => {
-            if (typeof item === 'string') {
-              const _item = {
-                label: item,
-                value: item,
-                isSelected: item === value
-              };
-              return _item;
-            } else {
-              const _item = {
-                label: item.label || item.value,
-                value: item.value,
-                isSelected: item.value === value
-              };
-              return _item;
-            }
-          })
-        );
-      }, []);
-
-      return (
-        <RadioGroup
-          key={id}
-          name={name}
-          label={label}
-          placeholder={placeholder}
-          disabled={disabled}
-          required={required}
-          isInvalid={!isValid}
-          value={stringValue}
-          items={items}
-          onRadioChange={(evt: any) => onChange(id, evt.target.value)}
-        />
-      );
+      return <RadioGroup key={id} {...field} />;
 
     case 'repeating':
       const fields: FieldDef[] = misc.fields || [];

@@ -8,13 +8,10 @@ class AtlaskitCheckbox extends React.Component<Field> {
   render() {
     const {
       disabled,
-      errorMessages,
       id,
       isValid,
       name,
       onFieldChange,
-      placeholder,
-      required,
       value,
       label
     } = this.props;
