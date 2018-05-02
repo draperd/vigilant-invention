@@ -1,8 +1,8 @@
 // @flow
 import React from 'react';
 import FieldText from '../components/fields/atlaskit/FieldText';
-import FieldTextArea from '@atlaskit/field-text-area';
-import Checkbox from '@atlaskit/checkbox';
+import FieldTextArea from '../components/fields/atlaskit/FieldTextArea';
+import Checkbox from '../components/fields/atlaskit/Checkbox';
 import RadioGroup from '@atlaskit/field-radio-group';
 import SingleSelect from '../components/fields/atlaskit/Select';
 import MultiSelect from '@atlaskit/multi-select';
@@ -30,34 +30,10 @@ const renderField: RenderField = (field: FieldDef, onChange: OnFieldChange) => {
       return <FieldText key={id} {...field} />;
 
     case 'textarea':
-      return (
-        <FieldTextArea
-          key={id}
-          name={name}
-          label={label}
-          placeholder={placeholder}
-          disabled={disabled}
-          required={required}
-          isInvalid={!isValid}
-          value={stringValue}
-          onChange={(evt: any) => onChange(id, evt.target.value)}
-        />
-      );
+      return <FieldTextArea key={id} {...field} />;
 
     case 'checkbox':
-      return (
-        //$FlowFixMe
-        <Checkbox
-          key={id}
-          name={name}
-          label={label}
-          isDisabled={disabled}
-          isInvalid={!isValid}
-          value={stringValue}
-          initiallyChecked={value}
-          onChange={evt => onChange(id, evt.isChecked)}
-        />
-      );
+      return <Checkbox key={id} {...field} />;
 
     case 'select':
       return <SingleSelect key={id} {...field} />;

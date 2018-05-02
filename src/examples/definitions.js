@@ -445,23 +445,23 @@ const formBuilder = [
 const frag1: FieldDef[] = [
   {
     id: 'ONE',
-    type: 'text',
+    type: 'checkbox',
     name: 'prop1',
     label: 'Show the field in the next tab',
-    value: 'show'
+    value: true
   }
 ];
 
 const frag2: FieldDef[] = [
   {
     id: 'TWO',
-    type: 'text',
+    type: 'textarea',
     name: 'prop2',
-    label: 'Shown when the field in the first tab has the value "show"',
+    label: 'Shown when the field in the first tab is checked',
     visibleWhen: [
       {
         field: 'ONE',
-        is: ['show']
+        is: [true]
       }
     ]
   }
