@@ -38,7 +38,7 @@ export type OptionGroup = {
 
 export type Options = OptionGroup[];
 
-export type OptionsHandler = string => Options | void;
+export type OptionsHandler = string => Options | null;
 
 export type FieldDef = {
   id: string,
@@ -46,7 +46,7 @@ export type FieldDef = {
   label?: string,
   description?: string,
   placeholder?: string,
-  type: string,
+  type?: string,
   defaultValue?: void | string | number | boolean | Array<any>,
   value?: void | string | number | boolean | Array<any>,
   visible?: boolean,
@@ -85,12 +85,12 @@ export type FormValue = {
 
 export type OnFormChange = (FormValue, boolean) => void;
 export type FormProps = {
-  defaultFields: FieldDef[],
+  defaultFields?: FieldDef[],
   value?: FormValue,
   onChange?: OnFormChange,
   renderField?: RenderField,
   optionsHandler?: OptionsHandler,
-  children?: Node[]
+  children?: Node
 };
 
 export type FormState = {

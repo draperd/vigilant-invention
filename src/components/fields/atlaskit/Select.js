@@ -4,8 +4,8 @@ import SingleSelect from '@atlaskit/single-select';
 import InfoIcon from '@atlaskit/icon/glyph/info';
 import Tooltip from '@atlaskit/tooltip';
 import styled from 'styled-components';
-import { FormContext } from '../Form';
-import type { Field, FieldDef } from '../types';
+import { FormContext } from '../../Form';
+import type { Field, FieldDef } from '../../../types';
 
 const Layout = styled.div`
   > div {

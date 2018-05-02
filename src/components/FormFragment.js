@@ -1,8 +1,8 @@
 // @flow
 import React, { Component, Fragment } from 'react';
 import { FormContext } from './Form';
-import { getFirstDefinedValue } from './utils';
-import type { FieldDef, FormContextData } from './types';
+import { getFirstDefinedValue } from '../utilities/utils';
+import type { FieldDef, FormContextData } from '../types';
 
 export type InnerFormFragmentProps = FormContextData & {
   defaultFields: FieldDef[]

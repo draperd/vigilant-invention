@@ -1,11 +1,9 @@
 // @flow
 import React, { Component } from 'react';
-// import isEqual from "lodash/isEqual";
 import Form from './Form';
-// import Button from "@atlaskit/button";
-import renderField from './AtlasKitFields';
-import type { FieldDef, FormValue } from './types';
-import { formBuilder } from '../../definitions';
+import renderField from '../renderers/AtlasKitFields';
+import type { FieldDef, FormValue } from '../types';
+import { formBuilder } from '../examples/definitions';
 
 type Props = {};
 
@@ -53,7 +51,7 @@ export default class FormBuilder extends Component<Props, State> {
             onChange={(value, isValid) =>
               this.onBuilderFormChange(value, isValid)
             }
-            optionsHandler={id => this.fetchOptions(id)}
+            // optionsHandler={id => this.fetchOptions(id)}
           />
         </section>
         <section>

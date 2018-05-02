@@ -1,13 +1,13 @@
 // @flow
 import React from 'react';
-import FieldText from './Atlaskit/FieldText';
+import FieldText from '../components/fields/atlaskit/FieldText';
 import FieldTextArea from '@atlaskit/field-text-area';
 import Checkbox from '@atlaskit/checkbox';
 import RadioGroup from '@atlaskit/field-radio-group';
-import SingleSelect from './Atlaskit/Select';
+import SingleSelect from '../components/fields/atlaskit/Select';
 import MultiSelect from '@atlaskit/multi-select';
-import RepeatingFormField from './RepeatingFormField';
-import type { RenderField, FieldDef, OnFieldChange } from './types';
+import RepeatingFormField from '../components/RepeatingFormField';
+import type { RenderField, FieldDef, OnFieldChange } from '../types';
 
 const renderField: RenderField = (field: FieldDef, onChange: OnFieldChange) => {
   const {

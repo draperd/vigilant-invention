@@ -7,7 +7,7 @@ import {
   registerField,
   registerFields,
   updateFieldValue
-} from './utils';
+} from '../utilities/utils';
 import type {
   FieldDef,
   FormContextData,
@@ -15,7 +15,7 @@ import type {
   FormState,
   OnFieldChange,
   Value
-} from './types';
+} from '../types';
 
 export const FormContext = React.createContext();
 

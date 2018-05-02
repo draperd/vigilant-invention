@@ -1,15 +1,15 @@
+// @flow
 import React, { Component } from 'react';
 import Tabs from '@atlaskit/tabs';
-import './App.css';
 
-import Form from './forms/components/Form';
-import FormFragment from './forms/components/FormFragment';
-import renderAkField from './forms/components/AtlasKitFields';
-import FormBuilder from './forms/components/FormBuilder';
-import FieldText from './forms/components/Atlaskit/FieldText';
-import FormButton from './forms/components/Atlaskit/FormButton';
+import Form from '../components/Form';
+import FormFragment from '../components/FormFragment';
+import renderAkField from '../renderers/AtlasKitFields';
+import FormBuilder from '../components/FormBuilder';
+import FieldText from '../components/fields/atlaskit/FieldText';
+import FormButton from '../components/buttons/atlaskit/FormButton';
 
-import { OptionsHandler } from './forms/components/types';
+import type { FormValue, OptionsHandler, Options } from '../types';
 import { createTeamForm, frag1, frag2 } from './definitions';
 
 const teamFormOptionsHandler: OptionsHandler = (fieldId: string) => {
@@ -147,7 +147,7 @@ const AppTabs = [
   }
 ];
 
-class App extends Component {
+class App extends Component<*, *> {
   render() {
     return (
       <div>

@@ -1,8 +1,8 @@
 // @flow
 import React, { Component, PureComponent } from 'react';
 import Form from './Form';
-import renderField from './AtlasKitFields';
-import type { FieldDef } from './types';
+import renderField from '../renderers/AtlasKitFields';
+import type { FieldDef } from '../types';
 import Button from '@atlaskit/button';
 import ChevronDownIcon from '@atlaskit/icon/glyph/chevron-down';
 import ChevronRightIcon from '@atlaskit/icon/glyph/chevron-right';

@@ -1,9 +1,5 @@
 // @flow
-import type {
-  Value,
-  ValidateField,
-  ValidateAllFields
-} from '../components/types';
+import type { Value, ValidateField, ValidateAllFields } from '../types';
 
 export type LengthIsGreaterThan = ({
   value: Value,

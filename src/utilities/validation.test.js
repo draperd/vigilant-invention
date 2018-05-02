@@ -7,8 +7,8 @@ import {
   matchesRegEx,
   validateField
 } from './validation';
-import { createField } from '../components/utils.js';
-import type { ValidateField, ValidateAllFields } from '../components/types';
+import { createField } from './utils.js';
+import type { ValidateField, ValidateAllFields } from '../types';
 
 const field1 = createField({
   id: 'one',
