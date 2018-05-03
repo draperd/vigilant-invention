@@ -2,7 +2,15 @@
 This is a work-in-progress forms library for use with React. It builds upon ideas that can be found in [Aikau](https://github.com/Alfresco/Aikau) and [studious-fiesta](https://github.com/draperd/studious-fiesta) for defining forms through declaration. 
 
 ## Why is this better than any of the other forms libraries that are available?
-To be honest I don't know - I've not actually taken a look at what else is available. I've been working on various implementations of the ideas in this project for over 10 years in a variety of different JavaScript frameworks. 
+To be honest I don't know - I've not actually taken a look at what else is available. I've been working on various implementations of the ideas in this project for over 10 years in a variety of different JavaScript frameworks... let me know if there are better options available and I'll do something else with my time. Maybe I'll take up golf.
+
+## Is this ready to use in my project?
+Not really. At the moment I'm just looking for feedback and validation on the approach, but hopefully soon I'll make some updates that make it easy for people to pull into their own projects and use.
+
+The code currently lives within an application built using create-react-app. The best way to evaluate this is to clone/fork the project and run `yarn install` then `yarn start` to see it in action.
+
+* Example form definitions can be found [here](https://github.com/draperd/vigilant-invention/blob/master/src/examples/definitions.js).
+* The app layout can be found [here](https://github.com/draperd/vigilant-invention/blob/master/src/examples/App.js).
 
 ## What problems are you trying to solve?
 
@@ -39,17 +47,9 @@ Form definitions support:
 
 ...and there will be more capabilities yet to be added
 
-**This project isn't ready to be used yet - at the moment I'm just looking for feedback and validation on the approach.**
+## Examples
 
-The code currently lives within an application built using create-react-app. The best way to evaluate this is to clone/fork the project and run `yarn install` then `yarn start` to see it in action.
-
-Example form definitions can be found [here](https://github.com/draperd/vigilant-invention/blob/master/src/examples/definitions.js).
-
-The app layout can be found [here](https://github.com/draperd/vigilant-invention/blob/master/src/examples/App.js).
-
-But for a brief summary...
-
-**Field Definition**
+#### Field Definition
 You can define fields using the following structure:
 
 ```JAVASCRIPT
@@ -103,7 +103,7 @@ const fields = [
 </Form>
 ```
   
-**Field rendering**
+#### Field rendering
 You can provide out-of-the-box or custom renderers and option handlers for your fields directly to the form (these will be used for all definitions in forms or fragements)
   
 ```JSX
@@ -114,7 +114,7 @@ You can provide out-of-the-box or custom renderers and option handlers for your 
 >
 ```
 
-**Buttons**
+#### Buttons
 You can place buttons anywhere within the form (allowing complex layouts) where the button will have access to the current form value.
 
 ```JSX
