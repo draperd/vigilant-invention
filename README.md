@@ -1,5 +1,5 @@
 ## What is this?
-This is a work-in-progress forms library for use with React. It builds upon ideas that can be found in [Aikau](https://github.com/Alfresco/Aikau) and [studious-fiesta](https://github.com/draperd/studious-fiesta) for defining forms through declaration. 
+This is a work-in-progress forms library for use with React. It provides a way of building forms through declaration rather than coding. 
 
 ## What's with the name?
 GitHub suggested it when I created the repository. I'm no better at naming things. It'll do for now.
@@ -97,7 +97,7 @@ const fields = [
  * valueDelimiter - When multiple options can be set as values this will convert the array into a string delimited by this value
  * addedSuffix - When using changes as values, this string will be appended to the `name` for the values added
  * removedSuffix - When using changes as values, this string will be appended to the `name` for the values removed
- * misx - Any else
+ * misc - Any else
  
  You can then pass the definition directly into a Form component
  
