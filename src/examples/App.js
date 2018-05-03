@@ -12,7 +12,7 @@ import FormButton from '../components/buttons/atlaskit/FormButton';
 import type { FormValue, OptionsHandler, Options } from '../types';
 import { createTeamForm, frag1, frag2 } from './definitions';
 
-const teamFormOptionsHandler: OptionsHandler = (fieldId: string) => {
+const teamFormOptionsHandler: OptionsHandler = (fieldId, fields) => {
   switch (fieldId) {
     case 'ISSUE_SOURCE':
       const options: Options = [

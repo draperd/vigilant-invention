@@ -1,8 +1,9 @@
 // @flow
 import React, { Component } from 'react';
 import Form from './Form';
+import FormButton from './buttons/atlaskit/FormButton';
 import renderField from '../renderers/AtlasKitFields';
-import type { FieldDef, FormValue } from '../types';
+import type { FieldDef, FormValue, OptionsHandler } from '../types';
 import { formBuilder } from '../examples/definitions';
 
 type Props = {};
@@ -12,6 +13,11 @@ type State = {
   builderFields: Array<any>,
   previewFormValue: any,
   previewFormButtonDisabled: boolean
+};
+
+const optionsHandler: OptionsHandler = (id, fields) => {
+  console.log('Getting options for', id, fields);
+  return [];
 };
 
 export default class FormBuilder extends Component<Props, State> {
@@ -32,16 +38,8 @@ export default class FormBuilder extends Component<Props, State> {
     });
   }
 
-  fetchOptions(id: string) {
-    // console.log('Fetching options for ', id);
-    return;
-  }
   render() {
-    const {
-      previewFields
-      // previewFormValue,
-      // previewFormButtonDisabled
-    } = this.state;
+    const { previewFields } = this.state;
     return (
       <div className="App">
         <section>
@@ -51,34 +49,19 @@ export default class FormBuilder extends Component<Props, State> {
             onChange={(value, isValid) =>
               this.onBuilderFormChange(value, isValid)
             }
-            // optionsHandler={id => this.fetchOptions(id)}
+            optionsHandler={optionsHandler}
           />
         </section>
         <section>
           <div>Preview</div>
-          <Form
-            defaultFields={previewFields.slice()}
-            renderField={renderField}
-            // onChange={(value, isValid) => {
-            //   if (!isEqual(value, previewFormValue)) {
-            //     console.log("Form changed", value, isValid);
-            //     this.setState({
-            //       // previewFormValue,
-            //       previewFormButtonDisabled: !isValid
-            //     });
-            //   }
-            // }}
-          />
-          {/* <div>
-            <Button
-              disabled={previewFormButtonDisabled}
-              onClick={() => {
-                console.log("Preview Form Value", previewFormValue);
-              }}
-            >
-              OK
-            </Button>
-          </div> */}
+          <Form defaultFields={previewFields.slice()} renderField={renderField}>
+            <FormButton
+              label="Test"
+              onClick={(value: FormValue) =>
+                console.log('Form preview value', value)
+              }
+            />
+          </Form>
         </section>
       </div>
     );
