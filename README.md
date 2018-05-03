@@ -1,6 +1,9 @@
 ## What is this?
 This is a work-in-progress forms library for use with React. It builds upon ideas that can be found in [Aikau](https://github.com/Alfresco/Aikau) and [studious-fiesta](https://github.com/draperd/studious-fiesta) for defining forms through declaration. 
 
+## What's with the name?
+GitHub suggested it when I created the repository. I'm no better at naming things. It'll do for now.
+
 ## Why is this better than any of the other forms libraries that are available?
 To be honest I don't know - I've not actually taken a look at what else is available. I've been working on various implementations of the ideas in this project for over 10 years in a variety of different JavaScript frameworks... let me know if there are better options available and I'll do something else with my time. Maybe I'll take up golf.
 
