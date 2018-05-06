@@ -2,6 +2,7 @@
   "name": "forms2",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://draperd.github.io/vigilant-invention",
   "dependencies": {
     "@atlaskit/button": "^6.6.0",
     "@atlaskit/checkbox": "^1.3.0",
@@ -37,7 +38,11 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "yarn run build",
+    "deploy": "gh-pages -d build"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "gh-pages": "^1.1.0"
+  }
 }
