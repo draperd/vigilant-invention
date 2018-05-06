@@ -1,6 +1,6 @@
 // @flow
 import React, { Component, PureComponent } from 'react';
-import Form from './Form';
+import Form, { FormContext } from './Form';
 import renderField from '../renderers/AtlasKitFields';
 import type { FieldDef } from '../types';
 import Button from '@atlaskit/button';
@@ -149,25 +149,33 @@ export default class RepeatingFormField extends Component<Props, State> {
     const { items } = this.state;
     const targetIndex = items.length;
     items[targetIndex] = (
-      <Form
-        key={`FIELD_${targetIndex}`}
-        defaultFields={fields}
-        renderField={renderField}
-        onChange={(value, isValid) => {
-          const { values } = this.state;
-          values[targetIndex] = value;
-          this.setState(
-            {
-              values
-            },
-            () => {
-              const { onChange } = this.props;
-              const { values } = this.state;
-              onChange && onChange(values);
-            }
+      <FormContext.Consumer>
+        {value => {
+          return (
+            <Form
+              parentContext={value}
+              key={`FIELD_${targetIndex}`}
+              defaultFields={fields}
+              renderField={renderField}
+              optionsHandler={value && value.optionsHandler}
+              onChange={(value, isValid) => {
+                const { values } = this.state;
+                values[targetIndex] = value;
+                this.setState(
+                  {
+                    values
+                  },
+                  () => {
+                    const { onChange } = this.props;
+                    const { values } = this.state;
+                    onChange && onChange(values);
+                  }
+                );
+              }}
+            />
           );
         }}
-      />
+      </FormContext.Consumer>
     );
     this.setState({ items });
   }

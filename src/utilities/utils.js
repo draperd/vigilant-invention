@@ -9,10 +9,10 @@ import type {
   EvaluateAllRules,
   FieldDef,
   GetMissingItems,
+  GetNextStateFromProps,
   JoinDelimitedValue,
   MapFieldsById,
   OmitFieldValue,
-  OptionsHandler,
   ProcessFields,
   ProcessOptions,
   RegisterField,
@@ -22,13 +22,15 @@ import type {
   Value
 } from '../types';
 
-export const getNextStateFromFields = (
-  fields: FieldDef[],
-  optionsHandler?: OptionsHandler
+export const getNextStateFromFields: GetNextStateFromProps = (
+  fields,
+  optionsHandler,
+  parentContext
 ) => {
+  // console.log("Getting next state from fields", parentContext);
   fields = processFields(fields);
   if (optionsHandler) {
-    fields = processOptions(fields, optionsHandler);
+    fields = processOptions(fields, optionsHandler, parentContext);
   }
   fields = validateAllFields(fields);
   const value = calculateFormValue(fields);
@@ -137,10 +139,15 @@ export const processFields: ProcessFields = fields => {
   return updatedFields;
 };
 
-export const processOptions: ProcessOptions = (fields, optionsHandler) => {
+export const processOptions: ProcessOptions = (
+  fields,
+  optionsHandler,
+  parentContext
+) => {
   return fields.map(field => {
     const { id } = field;
-    const options = optionsHandler(id);
+    // console.log("Calling otions handler with parent context", parentContext);
+    const options = optionsHandler(id, fields, parentContext);
     if (options) {
       field.options = options;
     }

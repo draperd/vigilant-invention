@@ -272,7 +272,7 @@ const fieldRules = [
   {
     id: 'FIELD',
     name: 'field',
-    type: 'text',
+    type: 'select',
     label: 'Field',
     placeholder: 'Field to test...',
     required: true

@@ -3,7 +3,13 @@ import React, { Component } from 'react';
 import Form from './Form';
 import FormButton from './buttons/atlaskit/FormButton';
 import renderField from '../renderers/AtlasKitFields';
-import type { FieldDef, FormValue, OptionsHandler } from '../types';
+import type {
+  FieldDef,
+  FormContextData,
+  FormValue,
+  Options,
+  OptionsHandler
+} from '../types';
 import { formBuilder } from '../examples/definitions';
 
 type Props = {};
@@ -15,9 +21,40 @@ type State = {
   previewFormButtonDisabled: boolean
 };
 
-const optionsHandler: OptionsHandler = (id, fields) => {
-  console.log('Getting options for', id, fields);
-  return [];
+const getDefinedFields = (parentContext: ?FormContextData): Options => {
+  if (
+    parentContext &&
+    parentContext.parentContext &&
+    parentContext.parentContext.fields &&
+    parentContext.parentContext.fields.length &&
+    parentContext.parentContext.fields[0].value
+  ) {
+    const value = parentContext.parentContext.fields[0].value;
+    if (Array.isArray(value)) {
+      const fields = [];
+      value.forEach(field => {
+        if (field.id) {
+          fields.push({
+            value: field.id
+          });
+        }
+      });
+      return [
+        {
+          items: fields
+        }
+      ];
+    }
+    return [];
+  }
+};
+
+const optionsHandler: OptionsHandler = (id, fields, parentContext) => {
+  if (id === 'FIELD') {
+    const definedFields = getDefinedFields(parentContext);
+    return definedFields;
+  }
+  return null;
 };
 
 export default class FormBuilder extends Component<Props, State> {
@@ -32,7 +69,6 @@ export default class FormBuilder extends Component<Props, State> {
   }
 
   onBuilderFormChange(value: FormValue, isValid: boolean) {
-    // console.log("Current form value", value.fields);
     this.setState({
       previewFields: value.fields
     });

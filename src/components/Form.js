@@ -38,12 +38,16 @@ export default class Form extends Component<FormProps, FormState> {
       const { value: valueFromState } = prevState;
 
       let { defaultFields, value: valueFromProps } = nextProps;
-      const { optionsHandler } = nextProps;
+      const { optionsHandler, parentContext } = nextProps;
       const fields = registerFields(
         defaultFields,
         valueFromProps || valueFromState || {}
       );
-      const nextState = getNextStateFromFields(fields, optionsHandler);
+      const nextState = getNextStateFromFields(
+        fields,
+        optionsHandler,
+        parentContext
+      );
 
       return {
         ...nextState,
@@ -55,9 +59,14 @@ export default class Form extends Component<FormProps, FormState> {
   }
 
   onFieldChange(id: string, value: Value) {
+    const { optionsHandler, parentContext } = this.props;
     let { fields } = this.state;
     fields = updateFieldValue(id, value, fields);
-    const nextState = getNextStateFromFields(fields, this.props.optionsHandler);
+    const nextState = getNextStateFromFields(
+      fields,
+      optionsHandler,
+      parentContext
+    );
 
     this.setState(
       (state, props) => {
@@ -90,7 +99,8 @@ export default class Form extends Component<FormProps, FormState> {
         let updatedFields = filteredFields.concat(field);
         const nextState = getNextStateFromFields(
           updatedFields,
-          props.optionsHandler
+          props.optionsHandler,
+          props.parentContext
         );
         return {
           ...nextState
@@ -101,7 +111,11 @@ export default class Form extends Component<FormProps, FormState> {
 
   createFormContext() {
     const { fields, value, isValid } = this.state;
-    const { renderField = this.renderField } = this.props;
+    const {
+      renderField = this.renderField,
+      optionsHandler,
+      parentContext
+    } = this.props;
     const onFieldChange = this.onFieldChange.bind(this);
 
     const context: FormContextData = {
@@ -110,8 +124,10 @@ export default class Form extends Component<FormProps, FormState> {
       value,
       registerField: this.registerField.bind(this),
       renderField,
+      optionsHandler,
       options: {},
-      onFieldChange
+      onFieldChange,
+      parentContext
     };
 
     return context;

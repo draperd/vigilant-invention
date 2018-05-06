@@ -38,7 +38,11 @@ export type OptionGroup = {
 
 export type Options = OptionGroup[];
 
-export type OptionsHandler = string => Options | null;
+export type OptionsHandler = (
+  string,
+  FieldDef[],
+  ?FormContextData
+) => Options | null;
 
 export type FieldDef = {
   id: string,
@@ -84,13 +88,15 @@ export type FormValue = {
 };
 
 export type OnFormChange = (FormValue, boolean) => void;
+
 export type FormProps = {
   defaultFields?: FieldDef[],
   value?: FormValue,
   onChange?: OnFormChange,
   renderField?: RenderField,
   optionsHandler?: OptionsHandler,
-  children?: Node
+  children?: Node,
+  parentContext?: FormContextData
 };
 
 export type FormState = {
@@ -113,7 +119,11 @@ export type EvaluateAllRules = (
 ) => boolean;
 
 export type ProcessFields = (FieldDef[]) => FieldDef[];
-export type ProcessOptions = (FieldDef[], OptionsHandler) => FieldDef[];
+export type ProcessOptions = (
+  FieldDef[],
+  OptionsHandler,
+  ?FormContextData
+) => FieldDef[];
 
 export type ValidationResult = {
   isValid: boolean,
@@ -141,6 +151,12 @@ export type DetermineChangedValues = FieldDef => Array<{
   value: Value
 }>;
 
+export type GetNextStateFromProps = (
+  FieldDef[],
+  ?OptionsHandler,
+  ?FormContextData
+) => $Shape<FormState>;
+
 export type CalculateFormValue = (FieldDef[]) => FormValue;
 
 export type OmitFieldValue = FieldDef => boolean;
@@ -150,6 +166,7 @@ export type FormContextData = {
   value: FormValue,
   isValid: boolean,
   options: { [string]: Options },
+  optionsHandler?: OptionsHandler,
   registerField: any,
   renderField: RenderField,
   onFieldChange: OnFieldChange
